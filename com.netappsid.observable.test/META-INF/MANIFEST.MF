@@ -6,6 +6,6 @@ Bundle-Version: 1.0.0
 Bundle-Vendor: NETAPPSID
 Fragment-Host: com.netappsid.observable;bundle-version="[1.0.0,2.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.junit;version="4.8.1",
- org.junit.runner;version="4.8.1",
- org.junit.runners;version="4.8.1"
+Import-Package: org.junit;version="[4.5.0,5.0.0)",
+ org.junit.runner;version="[4.5.0,5.0.0)",
+ org.junit.runners;version="[4.5.0,5.0.0)"
