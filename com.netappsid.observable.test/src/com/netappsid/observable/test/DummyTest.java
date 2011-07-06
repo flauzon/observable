@@ -1,6 +1,9 @@
-import org.junit.Before;
+package com.netappsid.observable.test;
 
-public class Test 
+import org.junit.Before;
+import org.junit.Test;
+
+public class DummyTest
 {
 	@Before
 	public void setUp()
