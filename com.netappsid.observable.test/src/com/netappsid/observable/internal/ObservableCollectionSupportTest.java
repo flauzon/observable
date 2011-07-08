@@ -15,7 +15,7 @@ import com.netappsid.observable.ListDifference;
 import com.netappsid.observable.ObservableCollectionSupport;
 import com.netappsid.observable.ObservableCollections;
 import com.netappsid.observable.ObservableSet;
-import com.netappsid.test.tools.CollectionChangeEventSpy;
+import com.netappsid.observable.test.CollectionChangeEventSpy;
 
 public class ObservableCollectionSupportTest
 {

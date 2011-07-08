@@ -14,8 +14,8 @@ import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
-import com.netappsid.test.tools.CollectionChangeEventSpy;
-import com.netappsid.test.tools.LabelledParameterized;
+import com.netappsid.observable.test.CollectionChangeEventSpy;
+import com.netappsid.test.tools.*;
 
 @RunWith(LabelledParameterized.class)
 public class ObservableListTest

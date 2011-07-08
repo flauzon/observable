@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.netappsid.observable.ObservableList;
-import com.netappsid.test.tools.CollectionChangeEventSpy;
+import com.netappsid.observable.test.CollectionChangeEventSpy;
 
 public class ObservableListIteratorTest
 {

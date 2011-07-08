@@ -11,7 +11,6 @@ import com.google.common.collect.ImmutableList;
 import com.netappsid.observable.ObservableList;
 import com.netappsid.observable.ObservableUnsafeFilteredSubList;
 import com.netappsid.observable.internal.ObservableFilteredListIteratorTest;
-import com.netappsid.test.tools.CollectionChangeEventSpy;
 
 public class ObservableUnsafeFilteredSubListTest
 {

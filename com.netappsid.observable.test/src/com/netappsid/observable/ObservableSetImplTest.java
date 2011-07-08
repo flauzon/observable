@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableSet;
-import com.netappsid.test.tools.CollectionChangeEventSpy;
+import com.netappsid.observable.test.CollectionChangeEventSpy;
 
 public class ObservableSetImplTest
 {
