@@ -20,7 +20,7 @@ public class LazyInitializerListTest
 	public void testDelegateCallInitializer()
 	{
 		LazyInitializer lazyInitializer = mock(LazyInitializer.class);
-		when(lazyInitializer.initilize()).thenReturn(Arrays.asList("Test"));
+		when(lazyInitializer.initialize()).thenReturn(Arrays.asList("Test"));
 
 		LazyInitializerList lazyInitializerList = new LazyInitializerList(lazyInitializer);
 		Object object = lazyInitializerList.get(0);
@@ -32,20 +32,20 @@ public class LazyInitializerListTest
 	public void testDelegateCallInitializer_initializeOneShot()
 	{
 		LazyInitializer lazyInitializer = mock(LazyInitializer.class);
-		when(lazyInitializer.initilize()).thenReturn(Arrays.asList("Test"));
+		when(lazyInitializer.initialize()).thenReturn(Arrays.asList("Test"));
 
 		LazyInitializerList lazyInitializerList = new LazyInitializerList(lazyInitializer);
 		Object object = lazyInitializerList.get(0);
 		Object object2 = lazyInitializerList.get(0);
 		
-		verify(lazyInitializer,times(1)).initilize();
+		verify(lazyInitializer,times(1)).initialize();
 	}
 	
 	@Test
 	public void testDelegateIsObservable()
 	{
 		LazyInitializer lazyInitializer = mock(LazyInitializer.class);
-		when(lazyInitializer.initilize()).thenReturn(new ArrayList());
+		when(lazyInitializer.initialize()).thenReturn(new ArrayList());
 
 		LazyInitializerList lazyInitializerList = new LazyInitializerList(lazyInitializer);
 		
