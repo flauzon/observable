@@ -168,7 +168,7 @@ public class LazyInitializerList<E> implements ObservableList<E>,Serializable
 	{
 		if (initilized == null)
 		{
-			List<E> newList = lazyInitializer.initilize();
+			List<E> newList = lazyInitializer.initialize();
 
 			if (newList instanceof ObservableList)
 			{

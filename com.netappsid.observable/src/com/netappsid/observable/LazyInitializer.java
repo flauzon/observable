@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface LazyInitializer<E>
 {
-	List<E> initilize();
+	List<E> initialize();
 }
