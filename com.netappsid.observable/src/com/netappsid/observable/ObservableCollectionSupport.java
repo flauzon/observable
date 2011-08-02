@@ -1,7 +1,6 @@
 package com.netappsid.observable;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 public interface ObservableCollectionSupport<E>
@@ -11,7 +10,7 @@ public interface ObservableCollectionSupport<E>
 
 	public void removeCollectionChangeListener(CollectionChangeListener listener);
 
-	public ImmutableMap<CollectionChangeListener<E>, SwingSafeCollectionChangeListener<E>> getCollectionChangeListeners();
+	public ImmutableList<CollectionChangeListener<E>> getCollectionChangeListeners();
 
 	public CollectionChangeEvent newCollectionChangeEvent(CollectionDifference<E> difference);
 

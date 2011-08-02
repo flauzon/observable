@@ -1,7 +1,6 @@
 package com.netappsid.observable;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 public class EmptyObservableCollectionSupport<E> implements ObservableCollectionSupport<E>
@@ -22,7 +21,7 @@ public class EmptyObservableCollectionSupport<E> implements ObservableCollection
 	}
 
 	@Override
-	public ImmutableMap<CollectionChangeListener<E>, SwingSafeCollectionChangeListener<E>> getCollectionChangeListeners()
+	public ImmutableList<CollectionChangeListener<E>> getCollectionChangeListeners()
 	{
 		
 		return null;

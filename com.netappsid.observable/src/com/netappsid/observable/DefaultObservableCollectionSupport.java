@@ -1,20 +1,18 @@
 package com.netappsid.observable;
 
-import static com.google.common.collect.Maps.*;
+import static com.google.common.collect.Lists.*;
 import static com.google.common.collect.Sets.*;
 
-import java.util.Map;
+import java.util.List;
 
-import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.netappsid.observable.internal.SetDifference;
 
 public class DefaultObservableCollectionSupport<E> implements ObservableCollectionSupport<E>
 {
 	private final ObservableCollection<E> source;
-	private final Map<CollectionChangeListener<E>, SwingSafeCollectionChangeListener<E>> listeners = newHashMap();
+	private final List<CollectionChangeListener<E>> listeners = newArrayList();
 
 	public DefaultObservableCollectionSupport(ObservableCollection<E> source)
 	{
@@ -24,9 +22,7 @@ public class DefaultObservableCollectionSupport<E> implements ObservableCollecti
 	@Override
 	public void addCollectionChangeListener(CollectionChangeListener listener)
 	{
-		// Wrap CollectionChangeListener with a SwingSafe listener to ensure invocation on UI thread.
-		SwingSafeCollectionChangeListener swingSafeCollectionChangeListener = new SwingSafeCollectionChangeListener(listener);
-		listeners.put(listener, swingSafeCollectionChangeListener);
+		listeners.add(listener);
 	}
 
 	@Override
@@ -36,9 +32,9 @@ public class DefaultObservableCollectionSupport<E> implements ObservableCollecti
 	}
 
 	@Override
-	public ImmutableMap<CollectionChangeListener<E>, SwingSafeCollectionChangeListener<E>> getCollectionChangeListeners()
+	public ImmutableList<CollectionChangeListener<E>> getCollectionChangeListeners()
 	{
-		return ImmutableMap.copyOf(listeners);
+		return ImmutableList.copyOf(listeners);
 	}
 
 	@Override
@@ -58,7 +54,7 @@ public class DefaultObservableCollectionSupport<E> implements ObservableCollecti
 	{
 		final ImmutableSet<E> added = ImmutableSet.copyOf(difference(newSet, oldSet));
 		final ImmutableSet<E> removed = ImmutableSet.copyOf(difference(oldSet, newSet));
-		fireCollectionChangeEvent((CollectionChangeEvent<E>) newCollectionChangeEvent(new SetDifference(removed, added)));
+		fireCollectionChangeEvent(newCollectionChangeEvent(new SetDifference(removed, added)));
 	}
 
 	@Override
@@ -80,7 +76,7 @@ public class DefaultObservableCollectionSupport<E> implements ObservableCollecti
 	{
 		if (event.getDifference().hasDifference())
 		{
-			for (CollectionChangeListener listener : listeners.values())
+			for (CollectionChangeListener listener : listeners)
 			{
 				listener.onCollectionChange(event);
 			}
