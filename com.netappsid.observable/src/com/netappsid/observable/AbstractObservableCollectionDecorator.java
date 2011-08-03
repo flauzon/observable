@@ -14,7 +14,6 @@ abstract class AbstractObservableCollectionDecorator<E> implements ObservableCol
 	public AbstractObservableCollectionDecorator(Collection<E> source)
 	{
 		this.internal = source;
-		this.support = new DefaultObservableCollectionSupport<E>(this);
 	}
 
 	@Override

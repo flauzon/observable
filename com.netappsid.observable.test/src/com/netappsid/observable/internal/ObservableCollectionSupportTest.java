@@ -35,7 +35,7 @@ public class ObservableCollectionSupportTest
 		final CollectionChangeListener listener = mock(CollectionChangeListener.class);
 		support.addCollectionChangeListener(listener);
 
-		assertTrue(support.getCollectionChangeListeners().containsKey(listener));
+		assertTrue(support.getCollectionChangeListeners().contains(listener));
 	}
 
 	@Test
@@ -45,7 +45,7 @@ public class ObservableCollectionSupportTest
 		support.addCollectionChangeListener(listener);
 		support.removeCollectionChangeListener(listener);
 
-		assertFalse(support.getCollectionChangeListeners().containsKey(listener));
+		assertFalse(support.getCollectionChangeListeners().contains(listener));
 	}
 
 	@Test
