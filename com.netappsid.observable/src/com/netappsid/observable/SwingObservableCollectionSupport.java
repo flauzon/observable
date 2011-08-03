@@ -4,11 +4,11 @@ import java.awt.EventQueue;
 
 import org.apache.log4j.Logger;
 
-public class SwingDefaultObservableCollectionSupport<E> extends DefaultObservableCollectionSupport<E>
+public class SwingObservableCollectionSupport<E> extends DefaultObservableCollectionSupport<E>
 {
-	private static final Logger LOGGER = Logger.getLogger(SwingDefaultObservableCollectionSupport.class);
+	private static final Logger LOGGER = Logger.getLogger(SwingObservableCollectionSupport.class);
 
-	public SwingDefaultObservableCollectionSupport(ObservableCollection<E> source)
+	public SwingObservableCollectionSupport(ObservableCollection<E> source)
 	{
 		super(source);
 	}
