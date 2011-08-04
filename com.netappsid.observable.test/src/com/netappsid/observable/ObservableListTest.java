@@ -1,6 +1,7 @@
 package com.netappsid.observable;
 
 import static com.google.common.collect.Lists.*;
+import static org.junit.Assert.*;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -15,7 +16,7 @@ import org.junit.runners.Parameterized.Parameters;
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableList;
 import com.netappsid.observable.test.CollectionChangeEventSpy;
-import com.netappsid.test.tools.*;
+import com.netappsid.test.tools.LabelledParameterized;
 
 @RunWith(LabelledParameterized.class)
 public class ObservableListTest
@@ -176,5 +177,12 @@ public class ObservableListTest
 			eventSpy.assertEvent(observableList, ImmutableList.of(value), ImmutableList.of(next), index);
 			index++;
 		}
+	}
+
+	@Test
+	public void test_getCollectionChangeListeners_EnsureNotNull()
+	{
+		assertEquals("Must contain only 1 element", 1, observableList.getCollectionChangeListeners().size());
+		assertTrue("Must contain only eventSpy", observableList.getCollectionChangeListeners().contains(eventSpy));
 	}
 }

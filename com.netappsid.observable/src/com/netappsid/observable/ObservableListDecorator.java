@@ -1,13 +1,10 @@
 package com.netappsid.observable;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
 import com.google.common.collect.ImmutableList;
-import com.netappsid.validate.Validate;
 
 class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E> implements ObservableList<E>
 {
@@ -173,5 +170,10 @@ class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E
 	{
 		getSupport().removeCollectionChangeListener(listener);
 	}
-	
+
+	@Override
+	public ImmutableList<CollectionChangeListener<E>> getCollectionChangeListeners()
+	{
+		return ImmutableList.copyOf(getSupport().getCollectionChangeListeners());
+	}
 }
