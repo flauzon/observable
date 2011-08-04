@@ -3,6 +3,7 @@ package com.netappsid.observable;
 import java.util.Collection;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
 class ObservableSetDecorator<E> extends AbstractObservableCollectionDecorator<E> implements ObservableSet<E>
@@ -78,5 +79,11 @@ class ObservableSetDecorator<E> extends AbstractObservableCollectionDecorator<E>
 	public void removeCollectionChangeListener(CollectionChangeListener<E> listener)
 	{
 		getSupport().removeCollectionChangeListener(listener);
+	}
+
+	@Override
+	public ImmutableList<CollectionChangeListener<E>> getCollectionChangeListeners()
+	{
+		return getSupport().getCollectionChangeListeners();
 	}
 }
