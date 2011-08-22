@@ -6,7 +6,6 @@ import static org.mockito.Mockito.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 import org.junit.Test;
 
@@ -15,12 +14,12 @@ public class ClearAndAddAllBatchActionTest
 	@Test
 	public void testBatchAction()
 	{
-		Collection newCollection = Arrays.asList("1", "2");
+		Collection<String> newCollection = Arrays.asList("1", "2");
 
-		ClearAndAddAllBatchAction action = new ClearAndAddAllBatchAction(newCollection);
+		ClearAndAddAllBatchAction<String> action = new ClearAndAddAllBatchAction<String>(newCollection);
 
-		ArrayList<Object> source = spy(new ArrayList<Object>());
-		ObservableList<Object> targetCollection = ObservableCollections.decorateList(source);
+		ArrayList<String> source = spy(new ArrayList<String>());
+		ObservableList<String> targetCollection = ObservableCollections.decorateList(source);
 		targetCollection.executeBatchAction(action);
 
 		verify(source).clear();

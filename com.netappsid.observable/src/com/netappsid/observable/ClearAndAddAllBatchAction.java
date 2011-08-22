@@ -2,17 +2,17 @@ package com.netappsid.observable;
 
 import java.util.Collection;
 
-public class ClearAndAddAllBatchAction implements BatchAction<Collection>
+public class ClearAndAddAllBatchAction<T> implements BatchAction<Collection<T>>
 {
-	private Collection newCollection;
+	private Collection<T> newCollection;
 
-	public ClearAndAddAllBatchAction(Collection newCollection)
+	public ClearAndAddAllBatchAction(Collection<T> newCollection)
 	{
 		this.newCollection = newCollection;
 	}
 	
 	@Override
-	public void execute(Collection collection)
+	public void execute(Collection<T> collection)
 	{
 		collection.clear();
 		
