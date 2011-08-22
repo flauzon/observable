@@ -2,15 +2,13 @@ package com.netappsid.observable;
 
 import java.beans.PropertyChangeListener;
 
-import com.netappsid.validate.Validate;
-
 /**
  * Implementation of ObservableListListener that manages registration of a PropertyChangeListener on the elements of the list.
  * 
  * TODO: Add the functionality of managing registration of more then one PropertyChangeListener if necessary. TODO: Class is coupled with
  * com.netappsid.bo.model.Model. See if there is a way to remove this coupling.
  * 
- * @author Eric B�langer
+ * @author Eric Bélanger
  * @author NetAppsID Inc.
  */
 public class ObservableElementsCollectionHandler<T extends ObservableByName> implements CollectionChangeListener<T>
@@ -25,7 +23,8 @@ public class ObservableElementsCollectionHandler<T extends ObservableByName> imp
 
 	public ObservableElementsCollectionHandler(String propertyName, PropertyChangeListener elementListener)
 	{
-		this.elementListener = Validate.notNull(elementListener);
+		assert elementListener != null;
+		this.elementListener = elementListener;
 		this.propertyName = propertyName;
 	}
 

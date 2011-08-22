@@ -1,2 +1,5 @@
-bin
-plugins
+target
+.classpath
+.settings
+META-INF/MANIFEST.MF
+.project
