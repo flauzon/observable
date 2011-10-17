@@ -9,7 +9,7 @@ import com.netappsid.collection.ArrayListSet;
 public class ListSetIteratorTest
 {
 	private ArrayListSet<Integer> list;
-	
+
 	@Test
 	public void testSetSameObject()
 	{
@@ -31,11 +31,11 @@ public class ListSetIteratorTest
 
 		while (listIterator.hasNext())
 		{
-			Integer next = (Integer)listIterator.next();
-			listIterator.set(next+1);
+			Integer next = (Integer) listIterator.next();
+			listIterator.set(next + 1);
 		}
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testSetDifferentObject_AlreadyInList()
 	{
@@ -44,7 +44,7 @@ public class ListSetIteratorTest
 
 		while (listIterator.hasNext())
 		{
-			Object next = listIterator.next();
+			listIterator.next();
 			listIterator.set(2);
 		}
 	}

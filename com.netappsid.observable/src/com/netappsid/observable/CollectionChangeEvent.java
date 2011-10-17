@@ -6,8 +6,6 @@ import java.util.Collection;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Objects.ToStringHelper;
-import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableSet;
 
 public class CollectionChangeEvent<E>
 {
