@@ -2,8 +2,6 @@ package com.netappsid.observable;
 
 import java.util.Iterator;
 
-import com.google.common.collect.ImmutableList;
-
 public class ObservableIterator<E> implements Iterator<E>
 {
 	private final Iterator<E> internal;
@@ -32,7 +30,9 @@ public class ObservableIterator<E> implements Iterator<E>
 	@Override
 	public void remove()
 	{
+		Object oldCollection = observableSupport.copySource();
 		internal.remove();
-		observableSupport.fireCollectionChangeEvent(observableSupport.newCollectionChangeEvent(new ListDifference<E>(ImmutableList.of(next), ImmutableList.<E> of())));
+		Object newCollection = observableSupport.copySource();
+		observableSupport.fireCollectionChangeEvent(oldCollection, newCollection);
 	}
 }

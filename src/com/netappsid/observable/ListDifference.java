@@ -29,7 +29,7 @@ public class ListDifference<E> extends AbstractCollectionDifference<E>
 		return hasMovedIndexes;
 	}
 
-	public static <E> CollectionDifference<E> difference(ImmutableList<E> oldList, ImmutableList<E> newList)
+	public static <E> ListDifference<E> difference(ImmutableList<E> oldList, ImmutableList<E> newList)
 	{
 		final List<E> oldListCopy = newArrayList(oldList);
 		final List<E> newListCopy = newArrayList(newList);

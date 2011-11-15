@@ -29,7 +29,7 @@ public class CollectionChangeEventSpy implements CollectionChangeListener<Intege
 		assertEquals("removed", removed, event.getRemoved());
 	}
 
-	public void assertEvent(ObservableCollection source, ImmutableCollection added, ImmutableCollection removed, int index)
+	public void assertEvent(ObservableCollection source, ImmutableCollection added, ImmutableCollection removed, Object index)
 	{
 		assertEquals("source", source, event.getSource());
 		assertEquals("added", added, event.getAdded());

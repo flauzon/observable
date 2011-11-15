@@ -3,87 +3,46 @@ package com.netappsid.observable;
 import java.util.Collection;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
+import com.netappsid.observable.internal.SetDifference;
 
-class ObservableSetDecorator<E> extends AbstractObservableCollectionDecorator<E> implements ObservableSet<E>
+class ObservableSetDecorator<E> extends AbstractObservableCollectionDecorator<E, ImmutableSet<E>> implements ObservableSet<E>
 {
-	private final Set<E> internal;
+
+	ObservableSetDecorator(Set<E> source, ObservableCollectionSupport<E> support)
+	{
+		super(source, support);
+	}
 
 	ObservableSetDecorator(Set<E> source)
 	{
 		super(source);
-		this.internal = source;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.netappsid.observable.AbstractObservableCollectionDecorator#copyOf(java.util.Collection)
+	 */
 	@Override
-	public boolean add(E e)
+	protected ImmutableSet<E> copyOf(Collection<E> internal)
 	{
-		final ImmutableSet<E> oldValue = ImmutableSet.copyOf(internal);
-		final boolean result = internal.add(e);
-		getSupport().fireCollectionChangeEvent(oldValue, ImmutableSet.copyOf(internal));
-		return result;
+		return ImmutableSet.copyOf(internal);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.netappsid.observable.ObservableCollection#createCollectionChangeEvent(java.lang.Object, java.lang.Object, java.lang.Object)
+	 */
 	@Override
-	public boolean remove(Object o)
+	public <T> CollectionChangeEvent<E> createCollectionChangeEvent(T oldCollection, T newCollection, Object index)
 	{
-		final ImmutableSet<E> oldValue = ImmutableSet.copyOf(internal);
-		final boolean result = internal.remove(o);
-		getSupport().fireCollectionChangeEvent(oldValue, ImmutableSet.copyOf(internal));
-		return result;
-	}
-
-	@Override
-	public boolean addAll(Collection<? extends E> c)
-	{
-		final ImmutableSet<E> oldValue = ImmutableSet.copyOf(internal);
-		final boolean result = internal.addAll(c);
-		getSupport().fireCollectionChangeEvent(oldValue, ImmutableSet.copyOf(internal));
-		return result;
-	}
-
-	@Override
-	public boolean retainAll(Collection<?> c)
-	{
-		final ImmutableSet<E> oldValue = ImmutableSet.copyOf(internal);
-		final boolean result = internal.retainAll(c);
-		getSupport().fireCollectionChangeEvent(oldValue, ImmutableSet.copyOf(internal));
-		return result;
-	}
-
-	@Override
-	public boolean removeAll(Collection<?> c)
-	{
-		final ImmutableSet<E> oldValue = ImmutableSet.copyOf(internal);
-		final boolean result = internal.removeAll(c);
-		getSupport().fireCollectionChangeEvent(oldValue, ImmutableSet.copyOf(internal));
-		return result;
-	}
-
-	@Override
-	public void clear()
-	{
-		final ImmutableSet<E> oldValue = ImmutableSet.copyOf(internal);
-		internal.clear();
-		getSupport().fireCollectionChangeEvent(oldValue, ImmutableSet.copyOf(internal));
-	}
-
-	@Override
-	public void addCollectionChangeListener(CollectionChangeListener<E> listener)
-	{
-		getSupport().addCollectionChangeListener(listener);
-	}
-
-	@Override
-	public void removeCollectionChangeListener(CollectionChangeListener<E> listener)
-	{
-		getSupport().removeCollectionChangeListener(listener);
-	}
-
-	@Override
-	public ImmutableList<CollectionChangeListener<E>> getCollectionChangeListeners()
-	{
-		return getSupport().getCollectionChangeListeners();
+		ImmutableSet<E> oldSet = (ImmutableSet<E>) oldCollection;
+		ImmutableSet<E> newSet = (ImmutableSet<E>) newCollection;
+		final ImmutableSet<E> added = ImmutableSet.copyOf(Sets.difference(newSet, oldSet));
+		final ImmutableSet<E> removed = ImmutableSet.copyOf(Sets.difference(oldSet, newSet));
+		return new CollectionChangeEvent<E>(this, new SetDifference(removed, added));
 	}
 }

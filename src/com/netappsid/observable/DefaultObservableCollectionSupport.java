@@ -1,13 +1,10 @@
 package com.netappsid.observable;
 
 import static com.google.common.collect.Lists.*;
-import static com.google.common.collect.Sets.*;
 
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
-import com.netappsid.observable.internal.SetDifference;
 
 public class DefaultObservableCollectionSupport<E> implements ObservableCollectionSupport<E>
 {
@@ -38,48 +35,43 @@ public class DefaultObservableCollectionSupport<E> implements ObservableCollecti
 	}
 
 	@Override
-	public CollectionChangeEvent newCollectionChangeEvent(CollectionDifference<E> difference)
+	public <T> void fireCollectionChangeEvent(T oldCollection, T newCollection)
 	{
-		return new CollectionChangeEvent<E>(source, difference);
+		fireCollectionChangeEvent(oldCollection, newCollection, -1);
 	}
 
 	@Override
-	public CollectionChangeEvent newCollectionChangeEvent(CollectionDifference<E> difference, int index)
+	public <T> void fireCollectionChangeEvent(T oldCollection, T newCollection, Object index)
 	{
-		return new CollectionChangeEvent<E>(source, difference, index);
+		CollectionChangeEvent<E> collectionChangeEvent = source.createCollectionChangeEvent(oldCollection, newCollection, index);
+		fireCollectionChangeEvent(collectionChangeEvent);
+
 	}
 
+	/**
+	 * @param event
+	 */
 	@Override
-	public void fireCollectionChangeEvent(ImmutableSet<E> oldSet, ImmutableSet<E> newSet)
+	public void fireCollectionChangeEvent(CollectionChangeEvent<E> collectionChangeEvent)
 	{
-		final ImmutableSet<E> added = ImmutableSet.copyOf(difference(newSet, oldSet));
-		final ImmutableSet<E> removed = ImmutableSet.copyOf(difference(oldSet, newSet));
-		fireCollectionChangeEvent(newCollectionChangeEvent(new SetDifference(removed, added)));
-	}
-
-	@Override
-	public void fireCollectionChangeEvent(ImmutableList<E> oldList, ImmutableList<E> newList)
-	{
-		final CollectionDifference<E> difference = ListDifference.difference(oldList, newList);
-		fireCollectionChangeEvent(newCollectionChangeEvent(difference));
-	}
-
-	@Override
-	public void fireCollectionChangeEvent(ImmutableList<E> oldList, ImmutableList<E> newList, int index)
-	{
-		final CollectionDifference<E> difference = ListDifference.difference(oldList, newList);
-		fireCollectionChangeEvent(newCollectionChangeEvent(difference, index));
-	}
-
-	@Override
-	public void fireCollectionChangeEvent(CollectionChangeEvent<E> event)
-	{
-		if (event.getDifference().hasDifference())
+		if (collectionChangeEvent.getDifference().hasDifference())
 		{
 			for (CollectionChangeListener listener : listeners)
 			{
-				listener.onCollectionChange(event);
+				listener.onCollectionChange(collectionChangeEvent);
 			}
 		}
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.netappsid.observable.ObservableCollectionSupport#copySource()
+	 */
+	@Override
+	public <T> T copySource()
+	{
+		return source.copyInternal();
+	}
+
 }

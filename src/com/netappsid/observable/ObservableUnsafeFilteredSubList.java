@@ -17,10 +17,7 @@ import com.netappsid.observable.internal.ObservableFilteredListIterator;
 /**
  * If you think about using this class, think of something else.
  * 
- * Mixes 3 concerns into one list.
- * - observable
- * - filtered sublisting backed by source list
- * - unsafe typing
+ * Mixes 3 concerns into one list. - observable - filtered sublisting backed by source list - unsafe typing
  */
 public class ObservableUnsafeFilteredSubList<E> extends ObservableUnsafeList<E> implements Serializable
 {
@@ -30,7 +27,7 @@ public class ObservableUnsafeFilteredSubList<E> extends ObservableUnsafeList<E> 
 
 	ObservableUnsafeFilteredSubList(ObservableList<? super E> source, Predicate<? super E> predicate)
 	{
-		super((ObservableList) source);
+		super(source);
 		this.source = source;
 		this.filterPredicate = predicate;
 		this.indexes = HashBiMap.create();
@@ -255,8 +252,10 @@ public class ObservableUnsafeFilteredSubList<E> extends ObservableUnsafeList<E> 
 	{
 		final ImmutableList<E> filteredAdded = ImmutableList.copyOf(Iterables.filter(event.getAdded(), filterPredicate));
 		final ImmutableList<E> filteredRemoved = ImmutableList.copyOf(Iterables.filter(event.getRemoved(), filterPredicate));
-		final int index = event.getIndex() >= 0 ? findFilteredIndex(event.getIndex()) : -1;
-		getSupport().fireCollectionChangeEvent(new CollectionChangeEvent(ObservableUnsafeFilteredSubList.this, new ListDifference<E>(filteredRemoved, filteredAdded), index));
+		Integer index = event.getIndex();
+		index = index >= 0 ? findFilteredIndex(index) : -1;
+		getSupport().fireCollectionChangeEvent(
+				new CollectionChangeEvent(ObservableUnsafeFilteredSubList.this, new ListDifference<E>(filteredRemoved, filteredAdded), index));
 	}
 
 	private int findFilteredIndex(int sourceIndex)
