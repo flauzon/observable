@@ -100,28 +100,6 @@ public class ObservableCollectionSupportTest
 		eventSpy.assertEvent(source, ImmutableSet.of(4), ImmutableSet.of(1));
 	}
 
-	// @Test
-	// public void test_firesCollectionChangeEventFromListsDifference()
-	// {
-	// final CollectionChangeEventSpy eventSpy = new CollectionChangeEventSpy();
-	// support.addCollectionChangeListener(eventSpy);
-	//
-	// support.fireCollectionChangeEvent(ImmutableList.of(1, 2, 3), ImmutableList.of(2, 3, 4));
-	//
-	// eventSpy.assertEvent(source, ImmutableList.of(4), ImmutableList.of(1));
-	// }
-	//
-	// @Test
-	// public void test_firesIndexedCollectionChangeEventFromListsDifference()
-	// {
-	// final CollectionChangeEventSpy eventSpy = new CollectionChangeEventSpy();
-	// support.addCollectionChangeListener(eventSpy);
-	//
-	// support.fireCollectionChangeEvent(ImmutableList.of(1, 2, 3), ImmutableList.of(2, 3, 4), 2);
-	//
-	// eventSpy.assertEvent(source, ImmutableList.of(4), ImmutableList.of(1), 2);
-	// }
-
 	@Test
 	public void test_firesACollectionChangeEventPassedInParameter()
 	{
