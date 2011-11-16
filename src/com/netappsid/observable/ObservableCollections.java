@@ -1,10 +1,12 @@
 package com.netappsid.observable;
 
 import static com.google.common.collect.Lists.*;
+import static com.google.common.collect.Maps.*;
 import static com.google.common.collect.Sets.*;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
@@ -22,6 +24,21 @@ public class ObservableCollections
 	public static <E> ObservableSet<E> newObservableHashSet(E... elements)
 	{
 		return decorateSet(newHashSet(elements));
+	}
+
+	public static <K, E> ObservableMap<K, E> newObservableHashMap()
+	{
+		Map<K, E> newHashMap = newHashMap();
+		return decorateMap(newHashMap);
+	}
+
+	/**
+	 * @param newHashMap
+	 * @return
+	 */
+	public static <K, E> ObservableMap<K, E> decorateMap(Map<K, E> source)
+	{
+		return new ObservableMapDecorator<K, E>(source);
 	}
 
 	public static <E> ObservableSet<E> newObservableHashSet(Iterator<E> iterator)
@@ -63,7 +80,7 @@ public class ObservableCollections
 	{
 		return new ObservableListSetDecorator(source);
 	}
-	
+
 	public static <E> ObservableList<E> newLazyInitializeObservableList(LazyInitializer<E> lazyInitializer)
 	{
 		return new LazyInitializerList<E>(lazyInitializer);

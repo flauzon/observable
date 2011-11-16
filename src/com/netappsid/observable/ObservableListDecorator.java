@@ -5,8 +5,9 @@ import java.util.List;
 import java.util.ListIterator;
 
 import com.google.common.collect.ImmutableList;
+import com.netappsid.observable.internal.ListObservableCollectionSupport;
 
-class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E> implements ObservableList<E>
+class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E, ImmutableList<E>> implements ObservableList<E>
 {
 	private final List<E> internal;
 
@@ -14,15 +15,6 @@ class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E
 	{
 		super(source);
 		this.internal = source;
-	}
-
-	@Override
-	public boolean add(E e)
-	{
-		final ImmutableList<E> oldList = ImmutableList.copyOf(internal);
-		boolean result = internal.add(e);
-		getSupport().fireCollectionChangeEvent(oldList, ImmutableList.copyOf(internal));
-		return result;
 	}
 
 	@Override
@@ -34,29 +26,12 @@ class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends E> c)
-	{
-		final ImmutableList<E> oldList = ImmutableList.copyOf(internal);
-		boolean result = internal.addAll(c);
-		getSupport().fireCollectionChangeEvent(oldList, ImmutableList.copyOf(internal));
-		return result;
-	}
-
-	@Override
 	public boolean addAll(int index, Collection<? extends E> c)
 	{
 		final ImmutableList<E> oldList = ImmutableList.copyOf(internal);
 		boolean result = internal.addAll(index, c);
 		getSupport().fireCollectionChangeEvent(oldList, ImmutableList.copyOf(internal), index);
 		return result;
-	}
-
-	@Override
-	public void clear()
-	{
-		final ImmutableList<E> oldList = ImmutableList.copyOf(internal);
-		internal.clear();
-		getSupport().fireCollectionChangeEvent(oldList, ImmutableList.copyOf(internal));
 	}
 
 	@Override
@@ -80,13 +55,13 @@ class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E
 	@Override
 	public ListIterator<E> listIterator()
 	{
-		return new ObservableListIterator<E>(internal.listIterator(), getSupport());
+		return new ObservableListIterator<E, ImmutableList<E>>(internal.listIterator(), getSupport());
 	}
 
 	@Override
 	public ListIterator<E> listIterator(int index)
 	{
-		return new ObservableListIterator<E>(internal.listIterator(index), getSupport());
+		return new ObservableListIterator<E, ImmutableList<E>>(internal.listIterator(index), getSupport());
 	}
 
 	@Override
@@ -109,24 +84,6 @@ class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E
 	}
 
 	@Override
-	public boolean removeAll(Collection<?> c)
-	{
-		final ImmutableList<E> oldList = ImmutableList.copyOf(internal);
-		final boolean result = internal.removeAll(c);
-		getSupport().fireCollectionChangeEvent(oldList, ImmutableList.copyOf(internal));
-		return result;
-	}
-
-	@Override
-	public boolean retainAll(Collection<?> c)
-	{
-		final ImmutableList<E> oldList = ImmutableList.copyOf(internal);
-		final boolean result = internal.retainAll(c);
-		getSupport().fireCollectionChangeEvent(oldList, ImmutableList.copyOf(internal));
-		return result;
-	}
-
-	@Override
 	public E set(int index, E element)
 	{
 		final ImmutableList<E> oldList = ImmutableList.copyOf(internal);
@@ -141,39 +98,26 @@ class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E
 		return new ObservableListDecorator<E>(internal.subList(fromIndex, toIndex));
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.netappsid.observable.AbstractObservableCollectionDecorator#copyOf(java.util.Collection)
+	 */
 	@Override
-	public boolean equals(Object o)
+	protected ImmutableList<E> copyOf(Collection<E> internal)
 	{
-		return internal.equals(o);
+		return ImmutableList.copyOf(internal);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.netappsid.observable.AbstractObservableCollectionDecorator#newSupport()
+	 */
 	@Override
-	public int hashCode()
+	protected ObservableCollectionSupport<E, ImmutableList<E>> newSupport()
 	{
-		return internal.hashCode();
+		return new ListObservableCollectionSupport<E>(this);
 	}
 
-	@Override
-	public String toString()
-	{
-		return internal.toString();
-	}
-
-	@Override
-	public void addCollectionChangeListener(CollectionChangeListener<E> listener)
-	{
-		getSupport().addCollectionChangeListener(listener);
-	}
-
-	@Override
-	public void removeCollectionChangeListener(CollectionChangeListener<E> listener)
-	{
-		getSupport().removeCollectionChangeListener(listener);
-	}
-
-	@Override
-	public ImmutableList<CollectionChangeListener<E>> getCollectionChangeListeners()
-	{
-		return ImmutableList.copyOf(getSupport().getCollectionChangeListeners());
-	}
 }

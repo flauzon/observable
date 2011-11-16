@@ -2,40 +2,43 @@ package com.netappsid.observable;
 
 import java.util.ListIterator;
 
-import com.google.common.collect.ImmutableList;
-
-public final class ObservableListIterator<E> implements ListIterator<E>
+public final class ObservableListIterator<E, T> implements ListIterator<E>
 {
 	private final ListIterator<E> internal;
-	private final ObservableCollectionSupport<E> support;
+	private final ObservableCollectionSupport<E, T> support;
 	private E element;
 	private int index;
 
-	public ObservableListIterator(ListIterator<E> sourceIterator, ObservableCollectionSupport<E> sourceSupport)
+	public ObservableListIterator(ListIterator<E> sourceIterator, ObservableCollectionSupport<E, T> sourceSupport)
 	{
 		this.internal = sourceIterator;
 		this.support = sourceSupport;
 		this.index = -1;
 	}
 
+	@Override
 	public void add(E e)
 	{
+		T oldSource = support.copySource();
 		internal.add(e);
+		T newSource = support.copySource();
 		final int eventIndex = internal.previousIndex() != -1 ? internal.previousIndex() : 0;
-		final CollectionChangeEvent event = support.newCollectionChangeEvent(new ListDifference<E>(ImmutableList.<E> of(), ImmutableList.of(e)), eventIndex);
-		support.fireCollectionChangeEvent(event);
+		support.fireCollectionChangeEvent(oldSource, newSource, eventIndex);
 	}
 
+	@Override
 	public boolean hasNext()
 	{
 		return internal.hasNext();
 	}
 
+	@Override
 	public boolean hasPrevious()
 	{
 		return internal.hasPrevious();
 	}
 
+	@Override
 	public E next()
 	{
 		index = nextIndex();
@@ -43,11 +46,13 @@ public final class ObservableListIterator<E> implements ListIterator<E>
 		return element;
 	}
 
+	@Override
 	public int nextIndex()
 	{
 		return internal.nextIndex();
 	}
 
+	@Override
 	public E previous()
 	{
 		index = previousIndex();
@@ -55,20 +60,27 @@ public final class ObservableListIterator<E> implements ListIterator<E>
 		return element;
 	}
 
+	@Override
 	public int previousIndex()
 	{
 		return internal.previousIndex();
 	}
 
+	@Override
 	public void remove()
 	{
+		T oldSource = support.copySource();
 		internal.remove();
-		support.fireCollectionChangeEvent(support.newCollectionChangeEvent(new ListDifference<E>(ImmutableList.of(element), ImmutableList.<E> of()), index));
+		T newSource = support.copySource();
+		support.fireCollectionChangeEvent(oldSource, newSource, index);
 	}
 
+	@Override
 	public void set(E e)
 	{
+		T oldSource = support.copySource();
 		internal.set(e);
-		support.fireCollectionChangeEvent(support.newCollectionChangeEvent(new ListDifference<E>(ImmutableList.of(element), ImmutableList.of(e)), index));
+		T newSource = support.copySource();
+		support.fireCollectionChangeEvent(oldSource, newSource, index);
 	}
 }

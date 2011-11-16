@@ -1,9 +1,8 @@
 package com.netappsid.observable;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 
-public interface ObservableCollectionSupport<E>
+public interface ObservableCollectionSupport<E, T>
 {
 
 	public void addCollectionChangeListener(CollectionChangeListener listener);
@@ -12,16 +11,12 @@ public interface ObservableCollectionSupport<E>
 
 	public ImmutableList<CollectionChangeListener<E>> getCollectionChangeListeners();
 
-	public CollectionChangeEvent newCollectionChangeEvent(CollectionDifference<E> difference);
+	public void fireCollectionChangeEvent(T oldCollection, T newCollection);
 
-	public CollectionChangeEvent newCollectionChangeEvent(CollectionDifference<E> difference, int index);
+	public void fireCollectionChangeEvent(T oldCollection, T newCollection, Object index);
 
-	public void fireCollectionChangeEvent(ImmutableSet<E> oldSet, ImmutableSet<E> newSet);
+	public T copySource();
 
-	public void fireCollectionChangeEvent(ImmutableList<E> oldList, ImmutableList<E> newList);
-
-	public void fireCollectionChangeEvent(ImmutableList<E> oldList, ImmutableList<E> newList, int index);
-
-	public void fireCollectionChangeEvent(CollectionChangeEvent<E> event);
+	void fireCollectionChangeEvent(CollectionChangeEvent<E> collectionChangeEvent);
 
 }

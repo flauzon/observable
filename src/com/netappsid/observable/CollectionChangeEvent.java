@@ -10,7 +10,7 @@ import com.google.common.base.Objects.ToStringHelper;
 public class CollectionChangeEvent<E>
 {
 	private final ObservableCollection<E> source;
-	private final int index;
+	private final Object index;
 	private final CollectionDifference<E> difference;
 
 	public CollectionChangeEvent(ObservableCollection<E> source, CollectionDifference<E> difference)
@@ -18,7 +18,7 @@ public class CollectionChangeEvent<E>
 		this(source, difference, -1);
 	}
 
-	public CollectionChangeEvent(ObservableCollection<E> source, CollectionDifference<E> difference, int index)
+	public CollectionChangeEvent(ObservableCollection<E> source, CollectionDifference<E> difference, Object index)
 	{
 		this.source = source;
 		this.difference = difference;
@@ -35,9 +35,9 @@ public class CollectionChangeEvent<E>
 		return difference;
 	}
 
-	public int getIndex()
+	public <T> T getIndex()
 	{
-		return index;
+		return (T) index;
 	}
 
 	@Override

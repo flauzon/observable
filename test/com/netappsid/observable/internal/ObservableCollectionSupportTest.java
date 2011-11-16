@@ -10,9 +10,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.netappsid.observable.CollectionChangeEvent;
 import com.netappsid.observable.CollectionChangeListener;
-import com.netappsid.observable.DefaultObservableCollectionSupport;
+import com.netappsid.observable.CollectionDifference;
 import com.netappsid.observable.ListDifference;
-import com.netappsid.observable.ObservableCollectionSupport;
 import com.netappsid.observable.ObservableCollections;
 import com.netappsid.observable.ObservableSet;
 import com.netappsid.observable.test.CollectionChangeEventSpy;
@@ -20,13 +19,13 @@ import com.netappsid.observable.test.CollectionChangeEventSpy;
 public class ObservableCollectionSupportTest
 {
 	private ObservableSet<Integer> source;
-	private ObservableCollectionSupport<Integer> support;
+	private SetObservableCollectionSupport<Integer> support;
 
 	@Before
 	public void before()
 	{
 		source = ObservableCollections.newObservableHashSet();
-		support = new DefaultObservableCollectionSupport<Integer>(source);
+		support = new SetObservableCollectionSupport<Integer>(source);
 	}
 
 	@Test
@@ -54,10 +53,24 @@ public class ObservableCollectionSupportTest
 		final ImmutableList<Integer> added = ImmutableList.of(1);
 		final ImmutableList<Integer> removed = ImmutableList.of(2);
 
-		final CollectionChangeEvent event = support.newCollectionChangeEvent(new ListDifference(removed, added));
+		final CollectionChangeEvent event = newCollectionChangeEvent(new ListDifference(removed, added));
 		assertEquals(source, event.getSource());
 		assertEquals(added, event.getAdded());
 		assertEquals(removed, event.getRemoved());
+	}
+
+	private CollectionChangeEvent newCollectionChangeEvent(CollectionDifference difference)
+	{
+		return newCollectionChangeEvent(difference, null);
+	}
+
+	/**
+	 * @param listDifference
+	 * @return
+	 */
+	private CollectionChangeEvent newCollectionChangeEvent(CollectionDifference difference, Object index)
+	{
+		return new CollectionChangeEvent(source, difference, index);
 	}
 
 	@Test
@@ -67,7 +80,7 @@ public class ObservableCollectionSupportTest
 		final ImmutableList<Integer> removed = ImmutableList.of(2);
 		final int index = 1;
 
-		final CollectionChangeEvent event = support.newCollectionChangeEvent(new ListDifference(removed, added), index);
+		final CollectionChangeEvent event = newCollectionChangeEvent(new ListDifference(removed, added), index);
 		assertEquals(source, event.getSource());
 		assertEquals(added, event.getAdded());
 		assertEquals(removed, event.getRemoved());
@@ -86,34 +99,12 @@ public class ObservableCollectionSupportTest
 	}
 
 	@Test
-	public void test_firesCollectionChangeEventFromListsDifference()
-	{
-		final CollectionChangeEventSpy eventSpy = new CollectionChangeEventSpy();
-		support.addCollectionChangeListener(eventSpy);
-
-		support.fireCollectionChangeEvent(ImmutableList.of(1, 2, 3), ImmutableList.of(2, 3, 4));
-
-		eventSpy.assertEvent(source, ImmutableList.of(4), ImmutableList.of(1));
-	}
-
-	@Test
-	public void test_firesIndexedCollectionChangeEventFromListsDifference()
-	{
-		final CollectionChangeEventSpy eventSpy = new CollectionChangeEventSpy();
-		support.addCollectionChangeListener(eventSpy);
-
-		support.fireCollectionChangeEvent(ImmutableList.of(1, 2, 3), ImmutableList.of(2, 3, 4), 2);
-
-		eventSpy.assertEvent(source, ImmutableList.of(4), ImmutableList.of(1), 2);
-	}
-
-	@Test
 	public void test_firesACollectionChangeEventPassedInParameter()
 	{
 		final CollectionChangeEventSpy eventSpy = new CollectionChangeEventSpy();
 		support.addCollectionChangeListener(eventSpy);
 
-		final CollectionChangeEvent<Integer> event = support.newCollectionChangeEvent(new SetDifference(ImmutableSet.of(2), ImmutableSet.of(1)));
+		final CollectionChangeEvent<Integer> event = newCollectionChangeEvent(new SetDifference(ImmutableSet.of(2), ImmutableSet.of(1)));
 		support.fireCollectionChangeEvent(event);
 
 		assertEquals(event, eventSpy.getEvent());
@@ -125,9 +116,10 @@ public class ObservableCollectionSupportTest
 		final CollectionChangeEventSpy eventSpy = new CollectionChangeEventSpy();
 		support.addCollectionChangeListener(eventSpy);
 
-		final CollectionChangeEvent<Integer> event = support.newCollectionChangeEvent(new SetDifference(ImmutableSet.<Integer> of(), ImmutableSet.<Integer> of()));
+		final CollectionChangeEvent<Integer> event = newCollectionChangeEvent(new SetDifference(ImmutableSet.<Integer> of(), ImmutableSet.<Integer> of()));
 		support.fireCollectionChangeEvent(event);
 
 		assertNull(eventSpy.getEvent());
 	}
+
 }

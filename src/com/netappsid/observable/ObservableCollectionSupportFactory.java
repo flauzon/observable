@@ -2,5 +2,5 @@ package com.netappsid.observable;
 
 public interface ObservableCollectionSupportFactory
 {
-	<E> ObservableCollectionSupport<E> newObservableCollectionSupport(ObservableCollection<E> source);
+	<E, T> ObservableCollectionSupport<E, T> newObservableCollectionSupport(ObservableCollection<E> source);
 }
