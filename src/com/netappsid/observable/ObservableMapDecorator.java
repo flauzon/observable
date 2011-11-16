@@ -10,8 +10,7 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.MapDifference;
-import com.google.common.collect.Maps;
+import com.netappsid.observable.internal.MapObservableCollectionSupport;
 
 /**
  * @author xjodoin
@@ -23,7 +22,7 @@ import com.google.common.collect.Maps;
 public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>
 {
 	private final Map<K, E> internal;
-	private transient ObservableCollectionSupport<E> support;
+	private transient MapObservableCollectionSupport<K, E> support;
 
 	ObservableMapDecorator(Map<K, E> source)
 	{
@@ -143,7 +142,7 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>
 	@Override
 	public Set<K> keySet()
 	{
-		return new ObservableSetDecorator<K>(internal.keySet(), (ObservableCollectionSupport<K>) getSupport());
+		return new ObservableSetDecorator<K>(internal.keySet(), (ObservableCollectionSupport) getSupport());
 	}
 
 	/**
@@ -163,7 +162,7 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>
 	@Override
 	public Set<java.util.Map.Entry<K, E>> entrySet()
 	{
-		return new ObservableSetDecorator<Map.Entry<K, E>>(internal.entrySet(), (ObservableCollectionSupport<java.util.Map.Entry<K, E>>) getSupport());
+		return new ObservableSetDecorator<Map.Entry<K, E>>(internal.entrySet(), (ObservableCollectionSupport) getSupport());
 	}
 
 	/**
@@ -200,11 +199,11 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>
 		getSupport().fireCollectionChangeEvent(oldMap, ImmutableMap.copyOf(internal));
 	}
 
-	protected ObservableCollectionSupport<E> getSupport()
+	protected MapObservableCollectionSupport<K, E> getSupport()
 	{
 		if (support == null)
 		{
-			this.support = new DefaultObservableCollectionSupport<E>(this);
+			this.support = new MapObservableCollectionSupport<K, E>(this);
 		}
 
 		return support;
@@ -230,21 +229,6 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>
 	public void removeCollectionChangeListener(CollectionChangeListener<E> listener)
 	{
 		getSupport().removeCollectionChangeListener(listener);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.netappsid.observable.ObservableCollection#createCollectionChangeEvent(java.lang.Object, java.lang.Object, java.lang.Object)
-	 */
-	@Override
-	public <T> CollectionChangeEvent<E> createCollectionChangeEvent(T oldCollection, T newCollection, Object index)
-	{
-		Map oldMap = (Map) oldCollection;
-		Map newMap = (Map) newCollection;
-		MapDifference difference = Maps.difference(oldMap, newMap);
-		com.netappsid.observable.internal.MapDifference mapDifference = new com.netappsid.observable.internal.MapDifference(difference);
-		return new CollectionChangeEvent<E>(this, mapDifference, index);
 	}
 
 	/*

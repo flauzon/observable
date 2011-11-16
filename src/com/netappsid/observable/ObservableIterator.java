@@ -2,13 +2,13 @@ package com.netappsid.observable;
 
 import java.util.Iterator;
 
-public class ObservableIterator<E> implements Iterator<E>
+public class ObservableIterator<E, T> implements Iterator<E>
 {
 	private final Iterator<E> internal;
-	private final ObservableCollectionSupport<E> observableSupport;
+	private final ObservableCollectionSupport<E, T> observableSupport;
 	private E next;
 
-	public ObservableIterator(Iterator<E> sourceIterator, ObservableCollectionSupport<E> sourceSupport)
+	public ObservableIterator(Iterator<E> sourceIterator, ObservableCollectionSupport<E, T> sourceSupport)
 	{
 		this.internal = sourceIterator;
 		this.observableSupport = sourceSupport;
@@ -30,9 +30,9 @@ public class ObservableIterator<E> implements Iterator<E>
 	@Override
 	public void remove()
 	{
-		Object oldCollection = observableSupport.copySource();
+		T oldCollection = observableSupport.copySource();
 		internal.remove();
-		Object newCollection = observableSupport.copySource();
+		T newCollection = observableSupport.copySource();
 		observableSupport.fireCollectionChangeEvent(oldCollection, newCollection);
 	}
 }

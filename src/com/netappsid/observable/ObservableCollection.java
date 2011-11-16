@@ -14,7 +14,5 @@ public interface ObservableCollection<E> extends Iterable<E>, Serializable
 
 	void executeBatchAction(BatchAction action);
 
-	<T> CollectionChangeEvent<E> createCollectionChangeEvent(T oldCollection, T newCollection, Object index);
-
 	<T> T copyInternal();
 }

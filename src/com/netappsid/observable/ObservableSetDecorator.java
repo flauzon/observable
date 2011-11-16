@@ -4,13 +4,12 @@ import java.util.Collection;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
-import com.netappsid.observable.internal.SetDifference;
+import com.netappsid.observable.internal.SetObservableCollectionSupport;
 
 class ObservableSetDecorator<E> extends AbstractObservableCollectionDecorator<E, ImmutableSet<E>> implements ObservableSet<E>
 {
 
-	ObservableSetDecorator(Set<E> source, ObservableCollectionSupport<E> support)
+	ObservableSetDecorator(Set<E> source, ObservableCollectionSupport<E, ImmutableSet<E>> support)
 	{
 		super(source, support);
 	}
@@ -34,15 +33,12 @@ class ObservableSetDecorator<E> extends AbstractObservableCollectionDecorator<E,
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.netappsid.observable.ObservableCollection#createCollectionChangeEvent(java.lang.Object, java.lang.Object, java.lang.Object)
+	 * @see com.netappsid.observable.AbstractObservableCollectionDecorator#newSupport()
 	 */
 	@Override
-	public <T> CollectionChangeEvent<E> createCollectionChangeEvent(T oldCollection, T newCollection, Object index)
+	protected ObservableCollectionSupport<E, ImmutableSet<E>> newSupport()
 	{
-		ImmutableSet<E> oldSet = (ImmutableSet<E>) oldCollection;
-		ImmutableSet<E> newSet = (ImmutableSet<E>) newCollection;
-		final ImmutableSet<E> added = ImmutableSet.copyOf(Sets.difference(newSet, oldSet));
-		final ImmutableSet<E> removed = ImmutableSet.copyOf(Sets.difference(oldSet, newSet));
-		return new CollectionChangeEvent<E>(this, new SetDifference(removed, added));
+		return new SetObservableCollectionSupport<E>(this);
 	}
+
 }

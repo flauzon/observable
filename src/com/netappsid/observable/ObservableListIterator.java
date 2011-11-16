@@ -2,14 +2,14 @@ package com.netappsid.observable;
 
 import java.util.ListIterator;
 
-public final class ObservableListIterator<E> implements ListIterator<E>
+public final class ObservableListIterator<E, T> implements ListIterator<E>
 {
 	private final ListIterator<E> internal;
-	private final ObservableCollectionSupport<E> support;
+	private final ObservableCollectionSupport<E, T> support;
 	private E element;
 	private int index;
 
-	public ObservableListIterator(ListIterator<E> sourceIterator, ObservableCollectionSupport<E> sourceSupport)
+	public ObservableListIterator(ListIterator<E> sourceIterator, ObservableCollectionSupport<E, T> sourceSupport)
 	{
 		this.internal = sourceIterator;
 		this.support = sourceSupport;
@@ -19,9 +19,9 @@ public final class ObservableListIterator<E> implements ListIterator<E>
 	@Override
 	public void add(E e)
 	{
-		Object oldSource = support.copySource();
+		T oldSource = support.copySource();
 		internal.add(e);
-		Object newSource = support.copySource();
+		T newSource = support.copySource();
 		final int eventIndex = internal.previousIndex() != -1 ? internal.previousIndex() : 0;
 		support.fireCollectionChangeEvent(oldSource, newSource, eventIndex);
 	}
@@ -69,18 +69,18 @@ public final class ObservableListIterator<E> implements ListIterator<E>
 	@Override
 	public void remove()
 	{
-		Object oldSource = support.copySource();
+		T oldSource = support.copySource();
 		internal.remove();
-		Object newSource = support.copySource();
+		T newSource = support.copySource();
 		support.fireCollectionChangeEvent(oldSource, newSource, index);
 	}
 
 	@Override
 	public void set(E e)
 	{
-		Object oldSource = support.copySource();
+		T oldSource = support.copySource();
 		internal.set(e);
-		Object newSource = support.copySource();
+		T newSource = support.copySource();
 		support.fireCollectionChangeEvent(oldSource, newSource, index);
 	}
 }

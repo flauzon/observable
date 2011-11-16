@@ -5,9 +5,6 @@ package com.netappsid.observable;
 
 import java.util.Collection;
 
-import com.google.common.collect.ImmutableCollection;
-import com.google.common.collect.ImmutableList;
-
 /**
  * @author xjodoin
  * @author NetAppsID inc.
@@ -15,13 +12,13 @@ import com.google.common.collect.ImmutableList;
  * @version
  * 
  */
-public class ObservableCollectionDecorator<E> extends AbstractObservableCollectionDecorator<E, ImmutableCollection<E>>
+public class ObservableCollectionDecorator<E, T> extends AbstractObservableCollectionDecorator<E, T>
 {
 
 	/**
 	 * @param source
 	 */
-	public ObservableCollectionDecorator(Collection<E> source, ObservableCollectionSupport<E> support)
+	public ObservableCollectionDecorator(Collection<E> source, ObservableCollectionSupport<E, T> support)
 	{
 		super(source, support);
 	}
@@ -32,20 +29,20 @@ public class ObservableCollectionDecorator<E> extends AbstractObservableCollecti
 	 * @see com.netappsid.observable.AbstractObservableCollectionDecorator#copyOf(java.util.Collection)
 	 */
 	@Override
-	protected ImmutableCollection<E> copyOf(Collection<E> internal)
+	protected T copyOf(Collection<E> internal)
 	{
-		return ImmutableList.copyOf(internal);
+		throw new UnsupportedOperationException("ObservableCollectionDecorator is not directly observable");
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.netappsid.observable.ObservableCollection#createCollectionChangeEvent(java.lang.Object, java.lang.Object, java.lang.Object)
+	 * @see com.netappsid.observable.AbstractObservableCollectionDecorator#newSupport()
 	 */
 	@Override
-	public <T> CollectionChangeEvent<E> createCollectionChangeEvent(T oldCollection, T newCollection, Object index)
+	protected ObservableCollectionSupport<E, T> newSupport()
 	{
-		// TODO
-		throw new RuntimeException();
+		throw new UnsupportedOperationException("ObservableCollectionDecorator is not directly observable");
 	}
+
 }

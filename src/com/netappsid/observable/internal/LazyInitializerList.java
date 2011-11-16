@@ -8,7 +8,6 @@ import java.util.ListIterator;
 
 import com.google.common.collect.ImmutableList;
 import com.netappsid.observable.BatchAction;
-import com.netappsid.observable.CollectionChangeEvent;
 import com.netappsid.observable.CollectionChangeListener;
 import com.netappsid.observable.LazyInitializer;
 import com.netappsid.observable.ObservableCollections;
@@ -217,17 +216,6 @@ public class LazyInitializerList<E> implements ObservableList<E>, Serializable
 
 		return initilized;
 
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.netappsid.observable.ObservableCollection#createCollectionChangeEvent(java.lang.Object, java.lang.Object, java.lang.Object)
-	 */
-	@Override
-	public <T> CollectionChangeEvent<E> createCollectionChangeEvent(T oldCollection, T newCollection, Object index)
-	{
-		return initilized.createCollectionChangeEvent(oldCollection, newCollection, index);
 	}
 
 	/*

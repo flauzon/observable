@@ -6,12 +6,12 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 
-public class DefaultObservableCollectionSupport<E> implements ObservableCollectionSupport<E>
+public abstract class AbstractObservableCollectionSupport<E, T> implements ObservableCollectionSupport<E, T>
 {
 	private final ObservableCollection<E> source;
 	private final List<CollectionChangeListener<E>> listeners = newArrayList();
 
-	public DefaultObservableCollectionSupport(ObservableCollection<E> source)
+	public AbstractObservableCollectionSupport(ObservableCollection<E> source)
 	{
 		this.source = source;
 	}
@@ -35,18 +35,20 @@ public class DefaultObservableCollectionSupport<E> implements ObservableCollecti
 	}
 
 	@Override
-	public <T> void fireCollectionChangeEvent(T oldCollection, T newCollection)
+	public void fireCollectionChangeEvent(T oldCollection, T newCollection)
 	{
 		fireCollectionChangeEvent(oldCollection, newCollection, -1);
 	}
 
 	@Override
-	public <T> void fireCollectionChangeEvent(T oldCollection, T newCollection, Object index)
+	public void fireCollectionChangeEvent(T oldCollection, T newCollection, Object index)
 	{
-		CollectionChangeEvent<E> collectionChangeEvent = source.createCollectionChangeEvent(oldCollection, newCollection, index);
+		CollectionChangeEvent<E> collectionChangeEvent = createCollectionChangeEvent(oldCollection, newCollection, index);
 		fireCollectionChangeEvent(collectionChangeEvent);
 
 	}
+
+	protected abstract CollectionChangeEvent<E> createCollectionChangeEvent(T oldCollection, T newCollection, Object index);
 
 	/**
 	 * @param event
@@ -69,9 +71,17 @@ public class DefaultObservableCollectionSupport<E> implements ObservableCollecti
 	 * @see com.netappsid.observable.ObservableCollectionSupport#copySource()
 	 */
 	@Override
-	public <T> T copySource()
+	public T copySource()
 	{
 		return source.copyInternal();
+	}
+
+	/**
+	 * @return the source
+	 */
+	protected ObservableCollection<E> getSource()
+	{
+		return source;
 	}
 
 }

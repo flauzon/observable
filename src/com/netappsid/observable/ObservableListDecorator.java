@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import com.google.common.collect.ImmutableList;
+import com.netappsid.observable.internal.ListObservableCollectionSupport;
 
 class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E, ImmutableList<E>> implements ObservableList<E>
 {
@@ -54,13 +55,13 @@ class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E
 	@Override
 	public ListIterator<E> listIterator()
 	{
-		return new ObservableListIterator<E>(internal.listIterator(), getSupport());
+		return new ObservableListIterator<E, ImmutableList<E>>(internal.listIterator(), getSupport());
 	}
 
 	@Override
 	public ListIterator<E> listIterator(int index)
 	{
-		return new ObservableListIterator<E>(internal.listIterator(index), getSupport());
+		return new ObservableListIterator<E, ImmutableList<E>>(internal.listIterator(index), getSupport());
 	}
 
 	@Override
@@ -111,14 +112,12 @@ class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.netappsid.observable.ObservableCollection#createCollectionChangeEvent(java.lang.Object, java.lang.Object, java.lang.Object)
+	 * @see com.netappsid.observable.AbstractObservableCollectionDecorator#newSupport()
 	 */
 	@Override
-	public <T> CollectionChangeEvent<E> createCollectionChangeEvent(T oldCollection, T newCollection, Object index)
+	protected ObservableCollectionSupport<E, ImmutableList<E>> newSupport()
 	{
-		ImmutableList<E> oldList = (ImmutableList<E>) oldCollection;
-		ImmutableList<E> newList = (ImmutableList<E>) newCollection;
-		ListDifference<E> difference = ListDifference.difference(oldList, newList);
-		return new CollectionChangeEvent<E>(this, difference, index);
+		return new ListObservableCollectionSupport<E>(this);
 	}
+
 }

@@ -11,9 +11,7 @@ import com.google.common.collect.ImmutableSet;
 import com.netappsid.observable.CollectionChangeEvent;
 import com.netappsid.observable.CollectionChangeListener;
 import com.netappsid.observable.CollectionDifference;
-import com.netappsid.observable.DefaultObservableCollectionSupport;
 import com.netappsid.observable.ListDifference;
-import com.netappsid.observable.ObservableCollectionSupport;
 import com.netappsid.observable.ObservableCollections;
 import com.netappsid.observable.ObservableSet;
 import com.netappsid.observable.test.CollectionChangeEventSpy;
@@ -21,13 +19,13 @@ import com.netappsid.observable.test.CollectionChangeEventSpy;
 public class ObservableCollectionSupportTest
 {
 	private ObservableSet<Integer> source;
-	private ObservableCollectionSupport<Integer> support;
+	private SetObservableCollectionSupport<Integer> support;
 
 	@Before
 	public void before()
 	{
 		source = ObservableCollections.newObservableHashSet();
-		support = new DefaultObservableCollectionSupport<Integer>(source);
+		support = new SetObservableCollectionSupport<Integer>(source);
 	}
 
 	@Test
