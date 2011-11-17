@@ -15,14 +15,14 @@ import com.netappsid.observable.CollectionChangeEvent;
 import com.netappsid.observable.CollectionChangeListener;
 import com.netappsid.observable.CollectionDifference;
 import com.netappsid.observable.ListDifference;
-import com.netappsid.observable.ObservableCollectionSupport;
+import com.netappsid.observable.InternalObservableCollectionSupport;
 import com.netappsid.observable.ObservableSetDecorator;
 import com.netappsid.observable.test.CollectionChangeEventSpy;
 
 public class ObservableCollectionSupportTest
 {
 	private InternalObservableCollection<Integer, Set<Integer>> source;
-	private ObservableCollectionSupport<Integer, Set<Integer>> support;
+	private InternalObservableCollectionSupport<Integer> support;
 
 	@Before
 	public void before()

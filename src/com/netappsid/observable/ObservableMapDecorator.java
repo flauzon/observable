@@ -143,7 +143,7 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>, Intern
 	@Override
 	public Set<K> keySet()
 	{
-		return new ObservableSetDecorator<K>(internal.keySet(), (ObservableCollectionSupport) getSupport());
+		return new ObservableSetDecorator<K>(internal.keySet(), (InternalObservableCollectionSupport) getSupport());
 	}
 
 	/**
@@ -163,7 +163,7 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>, Intern
 	@Override
 	public Set<java.util.Map.Entry<K, E>> entrySet()
 	{
-		return new ObservableSetDecorator<Map.Entry<K, E>>(internal.entrySet(), (ObservableCollectionSupport) getSupport());
+		return new ObservableSetDecorator<Map.Entry<K, E>>(internal.entrySet(), (InternalObservableCollectionSupport) getSupport());
 	}
 
 	/**

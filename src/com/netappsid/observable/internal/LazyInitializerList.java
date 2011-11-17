@@ -10,7 +10,7 @@ import com.google.common.collect.ImmutableList;
 import com.netappsid.observable.BatchAction;
 import com.netappsid.observable.CollectionChangeListener;
 import com.netappsid.observable.LazyInitializer;
-import com.netappsid.observable.ObservableCollectionSupport;
+import com.netappsid.observable.InternalObservableCollectionSupport;
 import com.netappsid.observable.ObservableCollections;
 import com.netappsid.observable.ObservableList;
 
@@ -236,7 +236,7 @@ public class LazyInitializerList<E> implements ObservableList<E>, Serializable, 
 	 * @see com.netappsid.observable.internal.InternalObservableCollection#getSupport()
 	 */
 	@Override
-	public ObservableCollectionSupport<E, List<E>> getSupport()
+	public InternalObservableCollectionSupport<E> getSupport()
 	{
 		return ((InternalObservableCollection<E, List<E>>) initilized).getSupport();
 	}

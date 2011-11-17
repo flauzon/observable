@@ -21,7 +21,7 @@ public class ObservableCollectionDecorator<E, T extends Collection<E> & Internal
 	/**
 	 * @param source
 	 */
-	public ObservableCollectionDecorator(T source, ObservableCollectionSupport<E, T> support)
+	public ObservableCollectionDecorator(T source, InternalObservableCollectionSupport<E> support)
 	{
 		super(source, support);
 	}
@@ -32,7 +32,7 @@ public class ObservableCollectionDecorator<E, T extends Collection<E> & Internal
 	 * @see com.netappsid.observable.AbstractObservableCollectionDecorator#newSupport()
 	 */
 	@Override
-	protected ObservableCollectionSupport<E, T> newSupport()
+	protected InternalObservableCollectionSupport<E> newSupport()
 	{
 		throw new UnsupportedOperationException("ObservableCollectionDecorator is not directly observable");
 	}

@@ -4,7 +4,7 @@
 package com.netappsid.observable.internal;
 
 import com.netappsid.observable.ObservableCollection;
-import com.netappsid.observable.ObservableCollectionSupport;
+import com.netappsid.observable.InternalObservableCollectionSupport;
 
 /**
  * @author xjodoin
@@ -20,5 +20,5 @@ public interface InternalObservableCollection<E, T> extends ObservableCollection
 	/**
 	 * @return
 	 */
-	ObservableCollectionSupport<E, T> getSupport();
+	InternalObservableCollectionSupport<E> getSupport();
 }

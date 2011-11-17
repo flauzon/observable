@@ -10,9 +10,9 @@ abstract class AbstractObservableCollectionDecorator<E, T extends Collection<E>>
 		InternalObservableCollection<E, T>
 {
 	private final T internal;
-	private transient ObservableCollectionSupport<E, T> support;
+	private transient InternalObservableCollectionSupport<E> support;
 
-	public AbstractObservableCollectionDecorator(T source, ObservableCollectionSupport<E, T> support)
+	public AbstractObservableCollectionDecorator(T source, InternalObservableCollectionSupport<E> support)
 	{
 		this.internal = source;
 		this.support = support;
@@ -163,7 +163,7 @@ abstract class AbstractObservableCollectionDecorator<E, T extends Collection<E>>
 	}
 
 	@Override
-	public ObservableCollectionSupport<E, T> getSupport()
+	public InternalObservableCollectionSupport<E> getSupport()
 	{
 		if (support == null)
 		{
@@ -176,7 +176,7 @@ abstract class AbstractObservableCollectionDecorator<E, T extends Collection<E>>
 	/**
 	 * @return
 	 */
-	protected abstract ObservableCollectionSupport<E, T> newSupport();
+	protected abstract InternalObservableCollectionSupport<E> newSupport();
 
 	protected abstract T copyOf(T internal);
 

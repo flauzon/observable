@@ -5,11 +5,11 @@ import java.util.ListIterator;
 public final class ObservableListIterator<E, T> implements ListIterator<E>
 {
 	private final ListIterator<E> internal;
-	private final ObservableCollectionSupport<E, T> support;
+	private final InternalObservableCollectionSupport<E> support;
 	private E element;
 	private int index;
 
-	public ObservableListIterator(ListIterator<E> sourceIterator, ObservableCollectionSupport<E, T> sourceSupport)
+	public ObservableListIterator(ListIterator<E> sourceIterator, InternalObservableCollectionSupport<E> sourceSupport)
 	{
 		this.internal = sourceIterator;
 		this.support = sourceSupport;

@@ -6,12 +6,12 @@ import org.apache.log4j.Logger;
 
 import com.google.common.collect.ImmutableList;
 
-public class SwingObservableCollectionSupport<E, T> implements ObservableCollectionSupport<E, T>
+public class SwingObservableCollectionSupport<E> implements InternalObservableCollectionSupport<E>
 {
 	private static final Logger LOGGER = Logger.getLogger(SwingObservableCollectionSupport.class);
-	private final ObservableCollectionSupport<E, T> delegate;
+	private final InternalObservableCollectionSupport<E> delegate;
 
-	public SwingObservableCollectionSupport(ObservableCollectionSupport<E, T> delegate)
+	public SwingObservableCollectionSupport(InternalObservableCollectionSupport<E> delegate)
 	{
 		this.delegate = delegate;
 	}
@@ -45,7 +45,7 @@ public class SwingObservableCollectionSupport<E, T> implements ObservableCollect
 
 	/**
 	 * @param listener
-	 * @see com.netappsid.observable.ObservableCollectionSupport#addCollectionChangeListener(com.netappsid.observable.CollectionChangeListener)
+	 * @see com.netappsid.observable.InternalObservableCollectionSupport#addCollectionChangeListener(com.netappsid.observable.CollectionChangeListener)
 	 */
 	@Override
 	public void addCollectionChangeListener(CollectionChangeListener listener)
@@ -55,7 +55,7 @@ public class SwingObservableCollectionSupport<E, T> implements ObservableCollect
 
 	/**
 	 * @param listener
-	 * @see com.netappsid.observable.ObservableCollectionSupport#removeCollectionChangeListener(com.netappsid.observable.CollectionChangeListener)
+	 * @see com.netappsid.observable.InternalObservableCollectionSupport#removeCollectionChangeListener(com.netappsid.observable.CollectionChangeListener)
 	 */
 	@Override
 	public void removeCollectionChangeListener(CollectionChangeListener listener)
@@ -65,7 +65,7 @@ public class SwingObservableCollectionSupport<E, T> implements ObservableCollect
 
 	/**
 	 * @return
-	 * @see com.netappsid.observable.ObservableCollectionSupport#getCollectionChangeListeners()
+	 * @see com.netappsid.observable.InternalObservableCollectionSupport#getCollectionChangeListeners()
 	 */
 	@Override
 	public ImmutableList<CollectionChangeListener<E>> getCollectionChangeListeners()
@@ -74,7 +74,7 @@ public class SwingObservableCollectionSupport<E, T> implements ObservableCollect
 	}
 
 	/**
-	 * @see com.netappsid.observable.ObservableCollectionSupport#fireCollectionChangeEvent()
+	 * @see com.netappsid.observable.InternalObservableCollectionSupport#fireCollectionChangeEvent()
 	 */
 	@Override
 	public void fireCollectionChangeEvent()
@@ -84,7 +84,7 @@ public class SwingObservableCollectionSupport<E, T> implements ObservableCollect
 
 	/**
 	 * @param index
-	 * @see com.netappsid.observable.ObservableCollectionSupport#fireCollectionChangeEvent(java.lang.Object)
+	 * @see com.netappsid.observable.InternalObservableCollectionSupport#fireCollectionChangeEvent(java.lang.Object)
 	 */
 	@Override
 	public void fireCollectionChangeEvent(Object index)
@@ -94,7 +94,7 @@ public class SwingObservableCollectionSupport<E, T> implements ObservableCollect
 
 	/**
 	 * @return
-	 * @see com.netappsid.observable.ObservableCollectionSupport#createSnapshot()
+	 * @see com.netappsid.observable.InternalObservableCollectionSupport#createSnapshot()
 	 */
 	@Override
 	public void createSnapshot()
@@ -105,7 +105,7 @@ public class SwingObservableCollectionSupport<E, T> implements ObservableCollect
 	/**
 	 * @param difference
 	 * @return
-	 * @see com.netappsid.observable.ObservableCollectionSupport#newCollectionChangeEvent(com.netappsid.observable.CollectionDifference)
+	 * @see com.netappsid.observable.InternalObservableCollectionSupport#newCollectionChangeEvent(com.netappsid.observable.CollectionDifference)
 	 */
 	@Override
 	public CollectionChangeEvent<E> newCollectionChangeEvent(CollectionDifference<E> difference)
@@ -117,7 +117,7 @@ public class SwingObservableCollectionSupport<E, T> implements ObservableCollect
 	 * @param difference
 	 * @param index
 	 * @return
-	 * @see com.netappsid.observable.ObservableCollectionSupport#newCollectionChangeEvent(com.netappsid.observable.CollectionDifference, java.lang.Object)
+	 * @see com.netappsid.observable.InternalObservableCollectionSupport#newCollectionChangeEvent(com.netappsid.observable.CollectionDifference, java.lang.Object)
 	 */
 	@Override
 	public CollectionChangeEvent<E> newCollectionChangeEvent(CollectionDifference<E> difference, Object index)

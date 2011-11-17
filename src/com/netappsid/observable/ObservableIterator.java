@@ -5,10 +5,10 @@ import java.util.Iterator;
 public class ObservableIterator<E, T> implements Iterator<E>
 {
 	private final Iterator<E> internal;
-	private final ObservableCollectionSupport<E, T> observableSupport;
+	private final InternalObservableCollectionSupport<E> observableSupport;
 	private E next;
 
-	public ObservableIterator(Iterator<E> sourceIterator, ObservableCollectionSupport<E, T> sourceSupport)
+	public ObservableIterator(Iterator<E> sourceIterator, InternalObservableCollectionSupport<E> sourceSupport)
 	{
 		this.internal = sourceIterator;
 		this.observableSupport = sourceSupport;

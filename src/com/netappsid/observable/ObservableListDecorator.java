@@ -118,7 +118,7 @@ class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E
 	 * @see com.netappsid.observable.AbstractObservableCollectionDecorator#newSupport()
 	 */
 	@Override
-	protected ObservableCollectionSupport<E, List<E>> newSupport()
+	protected InternalObservableCollectionSupport<E> newSupport()
 	{
 		return new ListObservableCollectionSupport<E, ObservableListDecorator<E>>(this);
 	}

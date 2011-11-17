@@ -8,7 +8,7 @@ import com.netappsid.observable.internal.SetObservableCollectionSupport;
 public class ObservableSetDecorator<E> extends AbstractObservableCollectionDecorator<E, Set<E>> implements ObservableSet<E>
 {
 
-	public ObservableSetDecorator(Set<E> source, ObservableCollectionSupport<E, Set<E>> support)
+	public ObservableSetDecorator(Set<E> source, InternalObservableCollectionSupport<E> support)
 	{
 		super(source, support);
 	}
@@ -35,7 +35,7 @@ public class ObservableSetDecorator<E> extends AbstractObservableCollectionDecor
 	 * @see com.netappsid.observable.AbstractObservableCollectionDecorator#newSupport()
 	 */
 	@Override
-	protected ObservableCollectionSupport<E, Set<E>> newSupport()
+	protected InternalObservableCollectionSupport<E> newSupport()
 	{
 		return new SetObservableCollectionSupport<E, ObservableSetDecorator<E>>(this);
 	}
