@@ -3,6 +3,8 @@
  */
 package com.netappsid.observable.internal;
 
+import java.util.Set;
+
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.netappsid.observable.AbstractObservableCollectionSupport;
@@ -16,13 +18,14 @@ import com.netappsid.observable.ObservableSet;
  * @version
  * 
  */
-public class SetObservableCollectionSupport<E> extends AbstractObservableCollectionSupport<E, ImmutableSet<E>>
+public class SetObservableCollectionSupport<E, T extends ObservableSet<E> & InternalObservableCollection<E, Set<E>>> extends
+		AbstractObservableCollectionSupport<E, Set<E>>
 {
 
 	/**
 	 * @param source
 	 */
-	public SetObservableCollectionSupport(ObservableSet<E> source)
+	public SetObservableCollectionSupport(T source)
 	{
 		super(source);
 	}
@@ -33,11 +36,13 @@ public class SetObservableCollectionSupport<E> extends AbstractObservableCollect
 	 * @see com.netappsid.observable.AbstractObservableCollectionSupport#createCollectionChangeEvent(java.lang.Object, java.lang.Object, java.lang.Object)
 	 */
 	@Override
-	protected CollectionChangeEvent<E> createCollectionChangeEvent(ImmutableSet<E> oldSet, ImmutableSet<E> newSet, Object index)
+	protected CollectionChangeEvent<E> createCollectionChangeEvent(Object index)
 	{
+		Set<E> oldSet = ImmutableSet.copyOf(getSnapshot());
+		Set<E> newSet = ImmutableSet.copyOf(takeSnapshot());
 		final ImmutableSet<E> added = ImmutableSet.copyOf(Sets.difference(newSet, oldSet));
 		final ImmutableSet<E> removed = ImmutableSet.copyOf(Sets.difference(oldSet, newSet));
-		return new CollectionChangeEvent<E>(getSource(), new SetDifference(removed, added));
+		return newCollectionChangeEvent(new SetDifference(removed, added));
 	}
 
 }

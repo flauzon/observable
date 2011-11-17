@@ -230,7 +230,10 @@ public class ObservableUnsafeFilteredSubList<E> extends ObservableUnsafeList<E> 
 		}
 
 		refreshIndexesMap();
-		getSupport().fireCollectionChangeEvent(oldList, ImmutableList.copyOf(this));
+
+		ListDifference<E> difference = ListDifference.difference(oldList, ImmutableList.copyOf(this));
+		CollectionChangeEvent<E> newCollectionChangeEvent = getSupport().newCollectionChangeEvent(difference);
+		getSupport().fireCollectionChangeEvent(newCollectionChangeEvent);
 	}
 
 	private void refreshIndexesMap()

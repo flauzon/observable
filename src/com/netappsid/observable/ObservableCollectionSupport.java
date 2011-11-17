@@ -11,12 +11,16 @@ public interface ObservableCollectionSupport<E, T>
 
 	public ImmutableList<CollectionChangeListener<E>> getCollectionChangeListeners();
 
-	public void fireCollectionChangeEvent(T oldCollection, T newCollection);
+	public void fireCollectionChangeEvent();
 
-	public void fireCollectionChangeEvent(T oldCollection, T newCollection, Object index);
+	public void fireCollectionChangeEvent(Object index);
 
-	public T copySource();
+	public void createSnapshot();
 
 	void fireCollectionChangeEvent(CollectionChangeEvent<E> collectionChangeEvent);
+
+	public CollectionChangeEvent<E> newCollectionChangeEvent(CollectionDifference<E> difference);
+
+	public CollectionChangeEvent<E> newCollectionChangeEvent(CollectionDifference<E> difference, Object index);
 
 }

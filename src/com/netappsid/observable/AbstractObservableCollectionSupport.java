@@ -5,13 +5,15 @@ import static com.google.common.collect.Lists.*;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
+import com.netappsid.observable.internal.InternalObservableCollection;
 
 public abstract class AbstractObservableCollectionSupport<E, T> implements ObservableCollectionSupport<E, T>
 {
-	private final ObservableCollection<E> source;
+	private final InternalObservableCollection<E, T> source;
 	private final List<CollectionChangeListener<E>> listeners = newArrayList();
+	private T snapshot;
 
-	public AbstractObservableCollectionSupport(ObservableCollection<E> source)
+	public AbstractObservableCollectionSupport(InternalObservableCollection<E, T> source)
 	{
 		this.source = source;
 	}
@@ -35,20 +37,20 @@ public abstract class AbstractObservableCollectionSupport<E, T> implements Obser
 	}
 
 	@Override
-	public void fireCollectionChangeEvent(T oldCollection, T newCollection)
+	public void fireCollectionChangeEvent()
 	{
-		fireCollectionChangeEvent(oldCollection, newCollection, -1);
+		fireCollectionChangeEvent(-1);
 	}
 
 	@Override
-	public void fireCollectionChangeEvent(T oldCollection, T newCollection, Object index)
+	public void fireCollectionChangeEvent(Object index)
 	{
-		CollectionChangeEvent<E> collectionChangeEvent = createCollectionChangeEvent(oldCollection, newCollection, index);
+		CollectionChangeEvent<E> collectionChangeEvent = createCollectionChangeEvent(index);
 		fireCollectionChangeEvent(collectionChangeEvent);
 
 	}
 
-	protected abstract CollectionChangeEvent<E> createCollectionChangeEvent(T oldCollection, T newCollection, Object index);
+	protected abstract CollectionChangeEvent<E> createCollectionChangeEvent(Object index);
 
 	/**
 	 * @param event
@@ -71,17 +73,44 @@ public abstract class AbstractObservableCollectionSupport<E, T> implements Obser
 	 * @see com.netappsid.observable.ObservableCollectionSupport#copySource()
 	 */
 	@Override
-	public T copySource()
+	public void createSnapshot()
+	{
+		snapshot = takeSnapshot();
+	}
+
+	public T takeSnapshot()
 	{
 		return source.copyInternal();
 	}
 
 	/**
-	 * @return the source
+	 * @return the snapshot
 	 */
-	protected ObservableCollection<E> getSource()
+	public T getSnapshot()
 	{
-		return source;
+		return snapshot;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.netappsid.observable.ObservableCollectionSupport#newCollectionChangeEvent(com.netappsid.observable.CollectionDifference)
+	 */
+	@Override
+	public CollectionChangeEvent<E> newCollectionChangeEvent(CollectionDifference<E> difference)
+	{
+		return new CollectionChangeEvent<E>(source, difference);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.netappsid.observable.ObservableCollectionSupport#newCollectionChangeEvent(com.netappsid.observable.CollectionDifference, java.lang.Object)
+	 */
+	@Override
+	public CollectionChangeEvent<E> newCollectionChangeEvent(CollectionDifference<E> difference, Object index)
+	{
+		return new CollectionChangeEvent<E>(source, difference, index);
 	}
 
 }

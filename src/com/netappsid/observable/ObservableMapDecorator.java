@@ -10,6 +10,7 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.netappsid.observable.internal.InternalObservableCollection;
 import com.netappsid.observable.internal.MapObservableCollectionSupport;
 
 /**
@@ -19,10 +20,10 @@ import com.netappsid.observable.internal.MapObservableCollectionSupport;
  * @version
  * 
  */
-public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>
+public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>, InternalObservableCollection<E, Map<K, E>>
 {
 	private final Map<K, E> internal;
-	private transient MapObservableCollectionSupport<K, E> support;
+	private transient MapObservableCollectionSupport<K, E, ObservableMapDecorator<K, E>> support;
 
 	ObservableMapDecorator(Map<K, E> source)
 	{
@@ -91,9 +92,9 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>
 	@Override
 	public E put(K key, E value)
 	{
-		final ImmutableMap<K, E> oldMap = ImmutableMap.copyOf(internal);
+		getSupport().createSnapshot();
 		E result = internal.put(key, value);
-		getSupport().fireCollectionChangeEvent(oldMap, ImmutableMap.copyOf(internal), key);
+		getSupport().fireCollectionChangeEvent(key);
 		return result;
 	}
 
@@ -105,9 +106,9 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>
 	@Override
 	public E remove(Object key)
 	{
-		final ImmutableMap<K, E> oldMap = ImmutableMap.copyOf(internal);
+		getSupport().createSnapshot();
 		E result = internal.remove(key);
-		getSupport().fireCollectionChangeEvent(oldMap, ImmutableMap.copyOf(internal), key);
+		getSupport().fireCollectionChangeEvent(key);
 		return result;
 	}
 
@@ -118,9 +119,9 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>
 	@Override
 	public void putAll(Map<? extends K, ? extends E> m)
 	{
-		final ImmutableMap<K, E> oldMap = ImmutableMap.copyOf(internal);
+		getSupport().createSnapshot();
 		internal.putAll(m);
-		getSupport().fireCollectionChangeEvent(oldMap, ImmutableMap.copyOf(internal));
+		getSupport().fireCollectionChangeEvent();
 	}
 
 	/**
@@ -130,9 +131,9 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>
 	@Override
 	public void clear()
 	{
-		final ImmutableMap<K, E> oldMap = ImmutableMap.copyOf(internal);
+		getSupport().createSnapshot();
 		internal.clear();
-		getSupport().fireCollectionChangeEvent(oldMap, ImmutableMap.copyOf(internal));
+		getSupport().fireCollectionChangeEvent();
 	}
 
 	/**
@@ -194,16 +195,17 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>
 	@Override
 	public void executeBatchAction(BatchAction action)
 	{
-		final ImmutableMap<K, E> oldMap = ImmutableMap.copyOf(internal);
+		getSupport().createSnapshot();
 		action.execute(internal);
-		getSupport().fireCollectionChangeEvent(oldMap, ImmutableMap.copyOf(internal));
+		getSupport().fireCollectionChangeEvent();
 	}
 
-	protected MapObservableCollectionSupport<K, E> getSupport()
+	@Override
+	public MapObservableCollectionSupport<K, E, ObservableMapDecorator<K, E>> getSupport()
 	{
 		if (support == null)
 		{
-			this.support = new MapObservableCollectionSupport<K, E>(this);
+			this.support = new MapObservableCollectionSupport<K, E, ObservableMapDecorator<K, E>>(this);
 		}
 
 		return support;
@@ -237,9 +239,9 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>
 	 * @see com.netappsid.observable.ObservableCollection#copy()
 	 */
 	@Override
-	public <T> T copyInternal()
+	public Map<K, E> copyInternal()
 	{
-		return (T) ImmutableMap.copyOf(internal);
+		return ImmutableMap.copyOf(internal);
 	}
 
 	/*

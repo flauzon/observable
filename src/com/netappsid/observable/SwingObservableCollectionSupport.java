@@ -74,35 +74,54 @@ public class SwingObservableCollectionSupport<E, T> implements ObservableCollect
 	}
 
 	/**
-	 * @param oldCollection
-	 * @param newCollection
-	 * @see com.netappsid.observable.ObservableCollectionSupport#fireCollectionChangeEvent(java.lang.Object, java.lang.Object)
+	 * @see com.netappsid.observable.ObservableCollectionSupport#fireCollectionChangeEvent()
 	 */
 	@Override
-	public void fireCollectionChangeEvent(T oldCollection, T newCollection)
+	public void fireCollectionChangeEvent()
 	{
-		delegate.fireCollectionChangeEvent(oldCollection, newCollection);
+		delegate.fireCollectionChangeEvent();
 	}
 
 	/**
-	 * @param oldCollection
-	 * @param newCollection
 	 * @param index
-	 * @see com.netappsid.observable.ObservableCollectionSupport#fireCollectionChangeEvent(java.lang.Object, java.lang.Object, java.lang.Object)
+	 * @see com.netappsid.observable.ObservableCollectionSupport#fireCollectionChangeEvent(java.lang.Object)
 	 */
 	@Override
-	public void fireCollectionChangeEvent(T oldCollection, T newCollection, Object index)
+	public void fireCollectionChangeEvent(Object index)
 	{
-		delegate.fireCollectionChangeEvent(oldCollection, newCollection, index);
+		delegate.fireCollectionChangeEvent(index);
 	}
 
 	/**
 	 * @return
-	 * @see com.netappsid.observable.ObservableCollectionSupport#copySource()
+	 * @see com.netappsid.observable.ObservableCollectionSupport#createSnapshot()
 	 */
 	@Override
-	public T copySource()
+	public void createSnapshot()
 	{
-		return delegate.copySource();
+		delegate.createSnapshot();
+	}
+
+	/**
+	 * @param difference
+	 * @return
+	 * @see com.netappsid.observable.ObservableCollectionSupport#newCollectionChangeEvent(com.netappsid.observable.CollectionDifference)
+	 */
+	@Override
+	public CollectionChangeEvent<E> newCollectionChangeEvent(CollectionDifference<E> difference)
+	{
+		return delegate.newCollectionChangeEvent(difference);
+	}
+
+	/**
+	 * @param difference
+	 * @param index
+	 * @return
+	 * @see com.netappsid.observable.ObservableCollectionSupport#newCollectionChangeEvent(com.netappsid.observable.CollectionDifference, java.lang.Object)
+	 */
+	@Override
+	public CollectionChangeEvent<E> newCollectionChangeEvent(CollectionDifference<E> difference, Object index)
+	{
+		return delegate.newCollectionChangeEvent(difference, index);
 	}
 }

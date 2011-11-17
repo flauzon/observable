@@ -4,19 +4,21 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import com.google.common.collect.ImmutableList;
+import com.netappsid.observable.internal.InternalObservableCollection;
 
-abstract class AbstractObservableCollectionDecorator<E, T> implements ObservableCollectionCollection<E>
+abstract class AbstractObservableCollectionDecorator<E, T extends Collection<E>> implements ObservableCollectionCollection<E>,
+		InternalObservableCollection<E, T>
 {
-	private final Collection<E> internal;
+	private final T internal;
 	private transient ObservableCollectionSupport<E, T> support;
 
-	public AbstractObservableCollectionDecorator(Collection<E> source, ObservableCollectionSupport<E, T> support)
+	public AbstractObservableCollectionDecorator(T source, ObservableCollectionSupport<E, T> support)
 	{
 		this.internal = source;
 		this.support = support;
 	}
 
-	public AbstractObservableCollectionDecorator(Collection<E> source)
+	public AbstractObservableCollectionDecorator(T source)
 	{
 		this.internal = source;
 	}
@@ -78,62 +80,62 @@ abstract class AbstractObservableCollectionDecorator<E, T> implements Observable
 	@Override
 	public void executeBatchAction(BatchAction action)
 	{
-		T oldSource = getSupport().copySource();
+		getSupport().createSnapshot();
 		action.execute(internal);
-		getSupport().fireCollectionChangeEvent(oldSource, getSupport().copySource());
+		getSupport().fireCollectionChangeEvent();
 	}
 
 	@Override
 	public boolean add(E e)
 	{
-		final T oldValue = copyOf(internal);
+		getSupport().createSnapshot();
 		final boolean result = internal.add(e);
-		getSupport().fireCollectionChangeEvent(oldValue, copyOf(internal));
+		getSupport().fireCollectionChangeEvent();
 		return result;
 	}
 
 	@Override
 	public boolean remove(Object o)
 	{
-		T oldSource = getSupport().copySource();
+		getSupport().createSnapshot();
 		final boolean result = internal.remove(o);
-		getSupport().fireCollectionChangeEvent(oldSource, getSupport().copySource());
+		getSupport().fireCollectionChangeEvent();
 		return result;
 	}
 
 	@Override
 	public boolean addAll(Collection<? extends E> c)
 	{
-		T oldSource = getSupport().copySource();
+		getSupport().createSnapshot();
 		final boolean result = internal.addAll(c);
-		getSupport().fireCollectionChangeEvent(oldSource, getSupport().copySource());
+		getSupport().fireCollectionChangeEvent();
 		return result;
 	}
 
 	@Override
 	public boolean retainAll(Collection<?> c)
 	{
-		T oldSource = getSupport().copySource();
+		getSupport().createSnapshot();
 		final boolean result = internal.retainAll(c);
-		getSupport().fireCollectionChangeEvent(oldSource, getSupport().copySource());
+		getSupport().fireCollectionChangeEvent();
 		return result;
 	}
 
 	@Override
 	public boolean removeAll(Collection<?> c)
 	{
-		T oldSource = getSupport().copySource();
+		getSupport().createSnapshot();
 		final boolean result = internal.removeAll(c);
-		getSupport().fireCollectionChangeEvent(oldSource, getSupport().copySource());
+		getSupport().fireCollectionChangeEvent();
 		return result;
 	}
 
 	@Override
 	public void clear()
 	{
-		T oldSource = getSupport().copySource();
+		getSupport().createSnapshot();
 		internal.clear();
-		getSupport().fireCollectionChangeEvent(oldSource, getSupport().copySource());
+		getSupport().fireCollectionChangeEvent();
 	}
 
 	@Override
@@ -160,7 +162,8 @@ abstract class AbstractObservableCollectionDecorator<E, T> implements Observable
 		return internal.toString();
 	}
 
-	protected ObservableCollectionSupport<E, T> getSupport()
+	@Override
+	public ObservableCollectionSupport<E, T> getSupport()
 	{
 		if (support == null)
 		{
@@ -175,7 +178,7 @@ abstract class AbstractObservableCollectionDecorator<E, T> implements Observable
 	 */
 	protected abstract ObservableCollectionSupport<E, T> newSupport();
 
-	protected abstract T copyOf(Collection<E> internal);
+	protected abstract T copyOf(T internal);
 
 	/*
 	 * (non-Javadoc)
@@ -183,9 +186,9 @@ abstract class AbstractObservableCollectionDecorator<E, T> implements Observable
 	 * @see com.netappsid.observable.ObservableCollection#copy()
 	 */
 	@Override
-	public <T> T copyInternal()
+	public T copyInternal()
 	{
-		return (T) copyOf(internal);
+		return copyOf(internal);
 	}
 
 }

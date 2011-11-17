@@ -2,7 +2,8 @@ package com.netappsid.observable.test;
 
 import static org.junit.Assert.*;
 
-import com.google.common.collect.ImmutableCollection;
+import java.util.Collection;
+
 import com.netappsid.observable.CollectionChangeEvent;
 import com.netappsid.observable.CollectionChangeListener;
 import com.netappsid.observable.ObservableCollection;
@@ -22,14 +23,14 @@ public class CollectionChangeEventSpy implements CollectionChangeListener<Intege
 		return event;
 	}
 
-	public void assertEvent(ObservableCollection source, ImmutableCollection added, ImmutableCollection removed)
+	public void assertEvent(ObservableCollection source, Collection added, Collection removed)
 	{
 		assertEquals("source", source, event.getSource());
 		assertEquals("added", added, event.getAdded());
 		assertEquals("removed", removed, event.getRemoved());
 	}
 
-	public void assertEvent(ObservableCollection source, ImmutableCollection added, ImmutableCollection removed, Object index)
+	public void assertEvent(ObservableCollection source, Collection added, Collection removed, Object index)
 	{
 		assertEquals("source", source, event.getSource());
 		assertEquals("added", added, event.getAdded());

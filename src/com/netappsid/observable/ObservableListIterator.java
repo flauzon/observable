@@ -19,11 +19,10 @@ public final class ObservableListIterator<E, T> implements ListIterator<E>
 	@Override
 	public void add(E e)
 	{
-		T oldSource = support.copySource();
+		support.createSnapshot();
 		internal.add(e);
-		T newSource = support.copySource();
 		final int eventIndex = internal.previousIndex() != -1 ? internal.previousIndex() : 0;
-		support.fireCollectionChangeEvent(oldSource, newSource, eventIndex);
+		support.fireCollectionChangeEvent(eventIndex);
 	}
 
 	@Override
@@ -69,18 +68,16 @@ public final class ObservableListIterator<E, T> implements ListIterator<E>
 	@Override
 	public void remove()
 	{
-		T oldSource = support.copySource();
+		support.createSnapshot();
 		internal.remove();
-		T newSource = support.copySource();
-		support.fireCollectionChangeEvent(oldSource, newSource, index);
+		support.fireCollectionChangeEvent(index);
 	}
 
 	@Override
 	public void set(E e)
 	{
-		T oldSource = support.copySource();
+		support.createSnapshot();
 		internal.set(e);
-		T newSource = support.copySource();
-		support.fireCollectionChangeEvent(oldSource, newSource, index);
+		support.fireCollectionChangeEvent(index);
 	}
 }

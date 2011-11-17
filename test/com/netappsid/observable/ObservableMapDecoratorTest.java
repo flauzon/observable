@@ -3,9 +3,9 @@
  */
 package com.netappsid.observable;
 
-import static com.netappsid.observable.ObservableCollections.*;
-
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
@@ -24,13 +24,13 @@ import com.netappsid.observable.test.CollectionChangeEventSpy;
 public class ObservableMapDecoratorTest
 {
 
-	private ObservableMap<Integer, Integer> observableMap;
+	private ObservableMapDecorator<Integer, Integer> observableMap;
 	private CollectionChangeEventSpy listener;
 
 	@Before
 	public void before()
 	{
-		observableMap = newObservableHashMap();
+		observableMap = new ObservableMapDecorator<Integer, Integer>(new HashMap<Integer, Integer>());
 		observableMap.put(1, 1);
 		observableMap.put(2, 2);
 		observableMap.put(3, 3);
@@ -79,7 +79,7 @@ public class ObservableMapDecoratorTest
 	@Test
 	public void test_clear()
 	{
-		ImmutableMap copy = observableMap.copyInternal();
+		Map<Integer, Integer> copy = observableMap.copyInternal();
 		observableMap.clear();
 		listener.assertEvent(observableMap, ImmutableMap.of().entrySet(), copy.entrySet());
 	}

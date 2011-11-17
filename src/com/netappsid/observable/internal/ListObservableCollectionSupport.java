@@ -3,6 +3,8 @@
  */
 package com.netappsid.observable.internal;
 
+import java.util.List;
+
 import com.google.common.collect.ImmutableList;
 import com.netappsid.observable.AbstractObservableCollectionSupport;
 import com.netappsid.observable.CollectionChangeEvent;
@@ -16,13 +18,14 @@ import com.netappsid.observable.ObservableList;
  * @version
  * 
  */
-public class ListObservableCollectionSupport<E> extends AbstractObservableCollectionSupport<E, ImmutableList<E>>
+public class ListObservableCollectionSupport<E, T extends ObservableList<E> & InternalObservableCollection<E, List<E>>> extends
+		AbstractObservableCollectionSupport<E, List<E>>
 {
 
 	/**
 	 * @param source
 	 */
-	public ListObservableCollectionSupport(ObservableList<E> source)
+	public ListObservableCollectionSupport(T source)
 	{
 		super(source);
 	}
@@ -33,10 +36,12 @@ public class ListObservableCollectionSupport<E> extends AbstractObservableCollec
 	 * @see com.netappsid.observable.AbstractObservableCollectionSupport#createCollectionChangeEvent(java.lang.Object, java.lang.Object, java.lang.Object)
 	 */
 	@Override
-	protected CollectionChangeEvent<E> createCollectionChangeEvent(ImmutableList<E> oldCollection, ImmutableList<E> newCollection, Object index)
+	protected CollectionChangeEvent<E> createCollectionChangeEvent(Object index)
 	{
-		ListDifference<E> difference = ListDifference.difference(oldCollection, newCollection);
-		return new CollectionChangeEvent<E>(getSource(), difference, index);
+		ImmutableList<E> oldList = ImmutableList.copyOf(getSnapshot());
+		ImmutableList<E> newList = ImmutableList.copyOf(takeSnapshot());
+		ListDifference<E> difference = ListDifference.difference(oldList, newList);
+		return newCollectionChangeEvent(difference, index);
 	}
 
 }

@@ -30,9 +30,8 @@ public class ObservableIterator<E, T> implements Iterator<E>
 	@Override
 	public void remove()
 	{
-		T oldCollection = observableSupport.copySource();
+		observableSupport.createSnapshot();
 		internal.remove();
-		T newCollection = observableSupport.copySource();
-		observableSupport.fireCollectionChangeEvent(oldCollection, newCollection);
+		observableSupport.fireCollectionChangeEvent();
 	}
 }
