@@ -1,18 +1,13 @@
 /**
  * 
  */
-package com.netappsid.observable.internal;
+package com.netappsid.observable;
 
 import static com.google.common.collect.Lists.*;
 
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
-import com.netappsid.observable.CollectionChangeEvent;
-import com.netappsid.observable.CollectionChangeListener;
-import com.netappsid.observable.CollectionDifference;
-import com.netappsid.observable.ObservableCollection;
-import com.netappsid.observable.ObservableCollectionSupport;
 
 /**
  * @author xjodoin
@@ -21,15 +16,15 @@ import com.netappsid.observable.ObservableCollectionSupport;
  * @version
  * 
  */
-public class DefaultObservableCollectionSupport<E, T extends ObservableCollection<E>> implements ObservableCollectionSupport<E>
+public class DefaultObservableCollectionSupport<E> implements ObservableCollectionSupport<E>
 {
 	private final List<CollectionChangeListener<E>> listeners = newArrayList();
-	private final T source;
+	private final ObservableCollection<E> source;
 
 	/**
 	 * 
 	 */
-	public DefaultObservableCollectionSupport(T source)
+	public DefaultObservableCollectionSupport(ObservableCollection<E> source)
 	{
 		this.source = source;
 	}
@@ -37,7 +32,7 @@ public class DefaultObservableCollectionSupport<E, T extends ObservableCollectio
 	/**
 	 * @return the source
 	 */
-	public T getSource()
+	public ObservableCollection<E> getSource()
 	{
 		return source;
 	}

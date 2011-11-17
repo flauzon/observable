@@ -1,16 +1,16 @@
 package com.netappsid.observable;
 
-import com.netappsid.observable.internal.DefaultObservableCollectionSupport;
 import com.netappsid.observable.internal.InternalObservableCollection;
 
-public abstract class AbstractObservableCollectionSupport<E, T> extends DefaultObservableCollectionSupport<E, InternalObservableCollection<E, T>> implements
-		InternalObservableCollectionSupport<E>
+public abstract class AbstractObservableCollectionSupport<E, T> extends DefaultObservableCollectionSupport<E> implements InternalObservableCollectionSupport<E>
 {
 	private T snapshot;
+	private final InternalObservableCollection<E, T> source;
 
 	public AbstractObservableCollectionSupport(InternalObservableCollection<E, T> source)
 	{
 		super(source);
+		this.source = source;
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public abstract class AbstractObservableCollectionSupport<E, T> extends DefaultO
 
 	public T takeSnapshot()
 	{
-		return getSource().copyInternal();
+		return source.copyInternal();
 	}
 
 	/**
