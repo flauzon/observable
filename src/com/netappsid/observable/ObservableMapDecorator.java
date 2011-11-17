@@ -20,12 +20,12 @@ import com.netappsid.observable.internal.MapObservableCollectionSupport;
  * @version
  * 
  */
-public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>, InternalObservableCollection<E, Map<K, E>>
+public class ObservableMapDecorator<K, V> implements ObservableMap<K, V>, InternalObservableCollection<Map.Entry<K, V>, Map<K, V>>
 {
-	private final Map<K, E> internal;
-	private transient MapObservableCollectionSupport<K, E, ObservableMapDecorator<K, E>> support;
+	private final Map<K, V> internal;
+	private transient MapObservableCollectionSupport<K, V, ObservableMapDecorator<K, V>> support;
 
-	ObservableMapDecorator(Map<K, E> source)
+	ObservableMapDecorator(Map<K, V> source)
 	{
 		this.internal = source;
 	}
@@ -78,7 +78,7 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>, Intern
 	 * @see java.util.Map#get(java.lang.Object)
 	 */
 	@Override
-	public E get(Object key)
+	public V get(Object key)
 	{
 		return internal.get(key);
 	}
@@ -90,10 +90,10 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>, Intern
 	 * @see java.util.Map#put(java.lang.Object, java.lang.Object)
 	 */
 	@Override
-	public E put(K key, E value)
+	public V put(K key, V value)
 	{
 		getSupport().createSnapshot();
-		E result = internal.put(key, value);
+		V result = internal.put(key, value);
 		getSupport().fireCollectionChangeEvent(key);
 		return result;
 	}
@@ -104,10 +104,10 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>, Intern
 	 * @see java.util.Map#remove(java.lang.Object)
 	 */
 	@Override
-	public E remove(Object key)
+	public V remove(Object key)
 	{
 		getSupport().createSnapshot();
-		E result = internal.remove(key);
+		V result = internal.remove(key);
 		getSupport().fireCollectionChangeEvent(key);
 		return result;
 	}
@@ -117,7 +117,7 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>, Intern
 	 * @see java.util.Map#putAll(java.util.Map)
 	 */
 	@Override
-	public void putAll(Map<? extends K, ? extends E> m)
+	public void putAll(Map<? extends K, ? extends V> m)
 	{
 		getSupport().createSnapshot();
 		internal.putAll(m);
@@ -151,7 +151,7 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>, Intern
 	 * @see java.util.Map#values()
 	 */
 	@Override
-	public Collection<E> values()
+	public Collection<V> values()
 	{
 		return new ObservableCollectionDecorator(internal.values(), getSupport());
 	}
@@ -161,9 +161,9 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>, Intern
 	 * @see java.util.Map#entrySet()
 	 */
 	@Override
-	public Set<java.util.Map.Entry<K, E>> entrySet()
+	public Set<java.util.Map.Entry<K, V>> entrySet()
 	{
-		return new ObservableSetDecorator<Map.Entry<K, E>>(internal.entrySet(), (InternalObservableCollectionSupport) getSupport());
+		return new ObservableSetDecorator<Map.Entry<K, V>>(internal.entrySet(), getSupport());
 	}
 
 	/**
@@ -201,11 +201,11 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>, Intern
 	}
 
 	@Override
-	public MapObservableCollectionSupport<K, E, ObservableMapDecorator<K, E>> getSupport()
+	public MapObservableCollectionSupport<K, V, ObservableMapDecorator<K, V>> getSupport()
 	{
 		if (support == null)
 		{
-			this.support = new MapObservableCollectionSupport<K, E, ObservableMapDecorator<K, E>>(this);
+			this.support = new MapObservableCollectionSupport<K, V, ObservableMapDecorator<K, V>>(this);
 		}
 
 		return support;
@@ -217,7 +217,7 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>, Intern
 	 * @see com.netappsid.observable.ObservableCollection#addCollectionChangeListener(com.netappsid.observable.CollectionChangeListener)
 	 */
 	@Override
-	public void addCollectionChangeListener(CollectionChangeListener<E> listener)
+	public void addCollectionChangeListener(CollectionChangeListener<Map.Entry<K, V>> listener)
 	{
 		getSupport().addCollectionChangeListener(listener);
 	}
@@ -228,20 +228,9 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>, Intern
 	 * @see com.netappsid.observable.ObservableCollection#removeCollectionChangeListener(com.netappsid.observable.CollectionChangeListener)
 	 */
 	@Override
-	public void removeCollectionChangeListener(CollectionChangeListener<E> listener)
+	public void removeCollectionChangeListener(CollectionChangeListener<Map.Entry<K, V>> listener)
 	{
 		getSupport().removeCollectionChangeListener(listener);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.netappsid.observable.ObservableCollection#copy()
-	 */
-	@Override
-	public Map<K, E> copyInternal()
-	{
-		return ImmutableMap.copyOf(internal);
 	}
 
 	/*
@@ -250,9 +239,58 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>, Intern
 	 * @see com.netappsid.observable.ObservableCollection#getCollectionChangeListeners()
 	 */
 	@Override
-	public ImmutableList<CollectionChangeListener<E>> getCollectionChangeListeners()
+	public ImmutableList<CollectionChangeListener<java.util.Map.Entry<K, V>>> getCollectionChangeListeners()
 	{
 		return getSupport().getCollectionChangeListeners();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.netappsid.observable.ObservableCollection#copy()
+	 */
+	@Override
+	public Map<K, V> copyInternal()
+	{
+		return ImmutableMap.copyOf(internal);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.netappsid.observable.ObservableCollection#apply(com.netappsid.observable.CollectionDifference)
+	 */
+	@Override
+	public void apply(CollectionDifference<java.util.Map.Entry<K, V>> difference)
+	{
+		for (java.util.Map.Entry<K, V> added : difference.getAdded())
+		{
+			put(added.getKey(), added.getValue());
+		}
+
+		for (java.util.Map.Entry<K, V> removed : difference.getRemoved())
+		{
+			remove(removed.getKey());
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.netappsid.observable.ObservableCollection#unapply(com.netappsid.observable.CollectionDifference)
+	 */
+	@Override
+	public void unapply(CollectionDifference<java.util.Map.Entry<K, V>> difference)
+	{
+		for (java.util.Map.Entry<K, V> added : difference.getAdded())
+		{
+			remove(added.getKey());
+		}
+
+		for (java.util.Map.Entry<K, V> removed : difference.getRemoved())
+		{
+			put(removed.getKey(), removed.getValue());
+		}
 	}
 
 	/*
@@ -261,8 +299,8 @@ public class ObservableMapDecorator<K, E> implements ObservableMap<K, E>, Intern
 	 * @see java.lang.Iterable#iterator()
 	 */
 	@Override
-	public Iterator<E> iterator()
+	public Iterator<Map.Entry<K, V>> iterator()
 	{
-		return values().iterator();
+		return entrySet().iterator();
 	}
 }

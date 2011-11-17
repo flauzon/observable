@@ -191,4 +191,42 @@ abstract class AbstractObservableCollectionDecorator<E, T extends Collection<E>>
 		return copyOf(internal);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.netappsid.observable.ObservableCollection#apply(com.netappsid.observable.CollectionDifference)
+	 */
+	@Override
+	public void apply(CollectionDifference<E> difference)
+	{
+		for (E added : difference.getAdded())
+		{
+			add(added);
+		}
+
+		for (E removed : difference.getRemoved())
+		{
+			remove(removed);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.netappsid.observable.ObservableCollection#unapply(com.netappsid.observable.CollectionDifference)
+	 */
+	@Override
+	public void unapply(CollectionDifference<E> difference)
+	{
+		for (E added : difference.getAdded())
+		{
+			remove(added);
+		}
+
+		for (E removed : difference.getRemoved())
+		{
+			add(removed);
+		}
+	}
+
 }

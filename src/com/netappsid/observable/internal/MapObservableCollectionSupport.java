@@ -18,8 +18,8 @@ import com.netappsid.observable.ObservableMap;
  * @version
  * 
  */
-public class MapObservableCollectionSupport<K, E, T extends ObservableMap<K, E> & InternalObservableCollection<E, Map<K, E>>> extends
-		AbstractObservableCollectionSupport<E, Map<K, E>>
+public class MapObservableCollectionSupport<K, V, T extends ObservableMap<K, V> & InternalObservableCollection<Map.Entry<K, V>, Map<K, V>>> extends
+		AbstractObservableCollectionSupport<Map.Entry<K, V>, Map<K, V>>
 {
 
 	/**
@@ -36,7 +36,7 @@ public class MapObservableCollectionSupport<K, E, T extends ObservableMap<K, E> 
 	 * @see com.netappsid.observable.AbstractObservableCollectionSupport#createCollectionChangeEvent(java.lang.Object, java.lang.Object, java.lang.Object)
 	 */
 	@Override
-	protected CollectionChangeEvent<E> createCollectionChangeEvent(Object index)
+	protected CollectionChangeEvent<Map.Entry<K, V>> createCollectionChangeEvent(Object index)
 	{
 		MapDifference difference = Maps.difference(getSnapshot(), takeSnapshot());
 		com.netappsid.observable.internal.MapDifference mapDifference = new com.netappsid.observable.internal.MapDifference(difference);

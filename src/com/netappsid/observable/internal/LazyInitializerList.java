@@ -9,8 +9,9 @@ import java.util.ListIterator;
 import com.google.common.collect.ImmutableList;
 import com.netappsid.observable.BatchAction;
 import com.netappsid.observable.CollectionChangeListener;
-import com.netappsid.observable.LazyInitializer;
+import com.netappsid.observable.CollectionDifference;
 import com.netappsid.observable.InternalObservableCollectionSupport;
+import com.netappsid.observable.LazyInitializer;
 import com.netappsid.observable.ObservableCollections;
 import com.netappsid.observable.ObservableList;
 
@@ -239,5 +240,27 @@ public class LazyInitializerList<E> implements ObservableList<E>, Serializable, 
 	public InternalObservableCollectionSupport<E> getSupport()
 	{
 		return ((InternalObservableCollection<E, List<E>>) initilized).getSupport();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.netappsid.observable.ObservableCollection#apply(com.netappsid.observable.CollectionDifference)
+	 */
+	@Override
+	public void apply(CollectionDifference<E> difference)
+	{
+		initilized.apply(difference);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.netappsid.observable.ObservableCollection#unapply(com.netappsid.observable.CollectionDifference)
+	 */
+	@Override
+	public void unapply(CollectionDifference<E> difference)
+	{
+		initilized.unapply(difference);
 	}
 }

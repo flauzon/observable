@@ -1,5 +1,6 @@
 package com.netappsid.observable;
 
+import com.netappsid.observable.internal.DefaultObservableCollectionSupport;
 import com.netappsid.observable.internal.InternalObservableCollection;
 
 public class StandardObservableCollectionSupportFactory implements ObservableCollectionSupportFactory
@@ -13,7 +14,7 @@ public class StandardObservableCollectionSupportFactory implements ObservableCol
 		}
 		else
 		{
-			throw new IllegalArgumentException("Is not a valid ObservableCollection");
+			return new DefaultObservableCollectionSupport<E, ObservableCollection<E>>(source);
 		}
 	}
 }

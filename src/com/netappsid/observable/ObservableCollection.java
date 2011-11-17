@@ -14,4 +14,8 @@ public interface ObservableCollection<E> extends Iterable<E>, Serializable
 
 	void executeBatchAction(BatchAction action);
 
+	void apply(CollectionDifference<E> difference);
+
+	void unapply(CollectionDifference<E> difference);
+
 }
