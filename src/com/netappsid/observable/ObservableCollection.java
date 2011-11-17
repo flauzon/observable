@@ -18,4 +18,6 @@ public interface ObservableCollection<E> extends Iterable<E>, Serializable
 
 	void unapply(CollectionDifference<E> difference);
 
+	int size();
+
 }

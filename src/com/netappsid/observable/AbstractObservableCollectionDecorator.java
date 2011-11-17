@@ -44,7 +44,7 @@ abstract class AbstractObservableCollectionDecorator<E, T extends Collection<E>>
 	@Override
 	public Iterator<E> iterator()
 	{
-		return new ObservableIterator<E, T>(internal.iterator(), getSupport());
+		return new ObservableIterator<E>(internal.iterator(), getSupport());
 	}
 
 	@Override

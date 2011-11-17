@@ -4,6 +4,7 @@
 package com.netappsid.observable;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * @author xjodoin
@@ -26,4 +27,13 @@ public interface ObservableCollectionSupport<E>
 	public void removeCollectionChangeListener(CollectionChangeListener listener);
 
 	public ImmutableList<CollectionChangeListener<E>> getCollectionChangeListeners();
+
+	@Deprecated
+	void fireCollectionChangeEvent(ImmutableSet<E> oldSet, ImmutableSet<E> newSet);
+
+	@Deprecated
+	void fireCollectionChangeEvent(ImmutableList<E> oldList, ImmutableList<E> newList);
+
+	@Deprecated
+	void fireCollectionChangeEvent(ImmutableList<E> oldList, ImmutableList<E> newList, int index);
 }

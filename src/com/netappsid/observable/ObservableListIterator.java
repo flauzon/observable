@@ -2,14 +2,16 @@ package com.netappsid.observable;
 
 import java.util.ListIterator;
 
-public final class ObservableListIterator<E, T> implements ListIterator<E>
+import com.google.common.collect.ImmutableList;
+
+public final class ObservableListIterator<E> implements ListIterator<E>
 {
 	private final ListIterator<E> internal;
-	private final InternalObservableCollectionSupport<E> support;
+	private final ObservableCollectionSupport<E> support;
 	private E element;
 	private int index;
 
-	public ObservableListIterator(ListIterator<E> sourceIterator, InternalObservableCollectionSupport<E> sourceSupport)
+	public ObservableListIterator(ListIterator<E> sourceIterator, ObservableCollectionSupport<E> sourceSupport)
 	{
 		this.internal = sourceIterator;
 		this.support = sourceSupport;
@@ -19,10 +21,10 @@ public final class ObservableListIterator<E, T> implements ListIterator<E>
 	@Override
 	public void add(E e)
 	{
-		support.createSnapshot();
 		internal.add(e);
 		final int eventIndex = internal.previousIndex() != -1 ? internal.previousIndex() : 0;
-		support.fireCollectionChangeEvent(eventIndex);
+		final CollectionChangeEvent event = support.newCollectionChangeEvent(new ListDifference<E>(ImmutableList.<E> of(), ImmutableList.of(e)), eventIndex);
+		support.fireCollectionChangeEvent(event);
 	}
 
 	@Override
@@ -68,16 +70,14 @@ public final class ObservableListIterator<E, T> implements ListIterator<E>
 	@Override
 	public void remove()
 	{
-		support.createSnapshot();
 		internal.remove();
-		support.fireCollectionChangeEvent(index);
+		support.fireCollectionChangeEvent(support.newCollectionChangeEvent(new ListDifference<E>(ImmutableList.of(element), ImmutableList.<E> of()), index));
 	}
 
 	@Override
 	public void set(E e)
 	{
-		support.createSnapshot();
 		internal.set(e);
-		support.fireCollectionChangeEvent(index);
+		support.fireCollectionChangeEvent(support.newCollectionChangeEvent(new ListDifference<E>(ImmutableList.of(element), ImmutableList.of(e)), index));
 	}
 }

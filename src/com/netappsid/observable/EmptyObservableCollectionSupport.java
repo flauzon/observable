@@ -4,6 +4,7 @@
 package com.netappsid.observable;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * @author xjodoin
@@ -74,5 +75,35 @@ public class EmptyObservableCollectionSupport<E> implements ObservableCollection
 	{
 		return null;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.netappsid.observable.ObservableCollectionSupport#fireCollectionChangeEvent(com.google.common.collect.ImmutableSet,
+	 * com.google.common.collect.ImmutableSet)
+	 */
+	@Override
+	public void fireCollectionChangeEvent(ImmutableSet<E> oldSet, ImmutableSet<E> newSet)
+	{}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.netappsid.observable.ObservableCollectionSupport#fireCollectionChangeEvent(com.google.common.collect.ImmutableList,
+	 * com.google.common.collect.ImmutableList)
+	 */
+	@Override
+	public void fireCollectionChangeEvent(ImmutableList<E> oldList, ImmutableList<E> newList)
+	{}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.netappsid.observable.ObservableCollectionSupport#fireCollectionChangeEvent(com.google.common.collect.ImmutableList,
+	 * com.google.common.collect.ImmutableList, int)
+	 */
+	@Override
+	public void fireCollectionChangeEvent(ImmutableList<E> oldList, ImmutableList<E> newList, int index)
+	{}
 
 }

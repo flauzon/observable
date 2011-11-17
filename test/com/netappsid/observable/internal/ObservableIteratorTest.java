@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
 import com.netappsid.observable.ObservableSet;
 import com.netappsid.observable.test.CollectionChangeEventSpy;
 
@@ -24,6 +24,6 @@ public class ObservableIteratorTest
 		final Integer removed = iterator.next();
 		iterator.remove();
 
-		eventSpy.assertEvent(observableSet, ImmutableSet.of(), ImmutableSet.of(removed));
+		eventSpy.assertEvent(observableSet, ImmutableList.of(), ImmutableList.of(removed));
 	}
 }

@@ -58,13 +58,13 @@ class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E
 	@Override
 	public ListIterator<E> listIterator()
 	{
-		return new ObservableListIterator<E, List<E>>(internal.listIterator(), getSupport());
+		return new ObservableListIterator<E>(internal.listIterator(), getSupport());
 	}
 
 	@Override
 	public ListIterator<E> listIterator(int index)
 	{
-		return new ObservableListIterator<E, List<E>>(internal.listIterator(index), getSupport());
+		return new ObservableListIterator<E>(internal.listIterator(index), getSupport());
 	}
 
 	@Override
