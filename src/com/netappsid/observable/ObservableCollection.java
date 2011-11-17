@@ -20,4 +20,6 @@ public interface ObservableCollection<E> extends Iterable<E>, Serializable
 
 	int size();
 
+	boolean isEmpty();
+
 }
