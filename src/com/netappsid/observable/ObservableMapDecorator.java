@@ -22,12 +22,35 @@ import com.netappsid.observable.internal.MapObservableCollectionSupport;
  */
 public class ObservableMapDecorator<K, V> implements ObservableMap<K, V>, InternalObservableCollection<Map.Entry<K, V>, Map<K, V>>
 {
-	private final Map<K, V> internal;
+	private Map<K, V> internal;
 	private transient MapObservableCollectionSupport<K, V, ObservableMapDecorator<K, V>> support;
 
-	ObservableMapDecorator(Map<K, V> source)
+	/**
+	 * 
+	 */
+	public ObservableMapDecorator()
+	{}
+
+	public ObservableMapDecorator(Map<K, V> source)
 	{
 		this.internal = source;
+	}
+
+	/**
+	 * @param internal
+	 *            the internal to set
+	 */
+	public void setInternal(Map<K, V> internal)
+	{
+		if (this.internal == null)
+		{
+			this.internal = internal;
+		}
+		else
+		{
+			throw new RuntimeException("the internal copllection is already set");
+		}
+
 	}
 
 	/**
