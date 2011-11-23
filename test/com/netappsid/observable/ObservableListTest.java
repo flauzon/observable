@@ -51,7 +51,8 @@ public class ObservableListTest
 
 		implementations.add(new Object[] { ObservableUnsafeFilteredSubList.class.getName(),
 				ObservableUnsafeFilteredSubList.of(ObservableCollections.<Integer> newObservableArrayList(), Predicates.alwaysTrue()) });
-		implementations.add(new Object[] { ObservableUnsafeList.class.getName(), ObservableUnsafeList.of(ObservableCollections.<Integer> newObservableArrayList()) });
+		implementations.add(new Object[] { ObservableUnsafeList.class.getName(),
+				ObservableUnsafeList.of(ObservableCollections.<Integer> newObservableArrayList()) });
 		implementations.add(new Object[] { ObservableListDecorator.class.getName(), ObservableCollections.<Integer> newObservableArrayList() });
 		return implementations;
 	}
@@ -184,5 +185,21 @@ public class ObservableListTest
 	{
 		assertEquals("Must contain only 1 element", 1, observableList.getCollectionChangeListeners().size());
 		assertTrue("Must contain only eventSpy", observableList.getCollectionChangeListeners().contains(eventSpy));
+	}
+
+	@Test
+	public void test_applyDiff()
+	{
+		ListDifference<Integer> difference = ListDifference.difference(ImmutableList.<Integer> of(), ImmutableList.of(4));
+		observableList.apply(difference);
+		assertEquals(ImmutableList.of(1, 2, 3, 4), observableList);
+	}
+
+	@Test
+	public void test_unapplyDiff()
+	{
+		ListDifference<Integer> difference = ListDifference.difference(ImmutableList.<Integer> of(), ImmutableList.of(3));
+		observableList.unapply(difference);
+		assertEquals(ImmutableList.of(1, 2), observableList);
 	}
 }

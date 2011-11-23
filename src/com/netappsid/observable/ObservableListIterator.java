@@ -2,14 +2,16 @@ package com.netappsid.observable;
 
 import java.util.ListIterator;
 
-public final class ObservableListIterator<E, T> implements ListIterator<E>
+import com.google.common.collect.ImmutableList;
+
+public final class ObservableListIterator<E> implements ListIterator<E>
 {
 	private final ListIterator<E> internal;
-	private final ObservableCollectionSupport<E, T> support;
+	private final ObservableCollectionSupport<E> support;
 	private E element;
 	private int index;
 
-	public ObservableListIterator(ListIterator<E> sourceIterator, ObservableCollectionSupport<E, T> sourceSupport)
+	public ObservableListIterator(ListIterator<E> sourceIterator, ObservableCollectionSupport<E> sourceSupport)
 	{
 		this.internal = sourceIterator;
 		this.support = sourceSupport;
@@ -19,11 +21,10 @@ public final class ObservableListIterator<E, T> implements ListIterator<E>
 	@Override
 	public void add(E e)
 	{
-		T oldSource = support.copySource();
 		internal.add(e);
-		T newSource = support.copySource();
 		final int eventIndex = internal.previousIndex() != -1 ? internal.previousIndex() : 0;
-		support.fireCollectionChangeEvent(oldSource, newSource, eventIndex);
+		final CollectionChangeEvent event = support.newCollectionChangeEvent(new ListDifference<E>(ImmutableList.<E> of(), ImmutableList.of(e)), eventIndex);
+		support.fireCollectionChangeEvent(event);
 	}
 
 	@Override
@@ -69,18 +70,14 @@ public final class ObservableListIterator<E, T> implements ListIterator<E>
 	@Override
 	public void remove()
 	{
-		T oldSource = support.copySource();
 		internal.remove();
-		T newSource = support.copySource();
-		support.fireCollectionChangeEvent(oldSource, newSource, index);
+		support.fireCollectionChangeEvent(support.newCollectionChangeEvent(new ListDifference<E>(ImmutableList.of(element), ImmutableList.<E> of()), index));
 	}
 
 	@Override
 	public void set(E e)
 	{
-		T oldSource = support.copySource();
 		internal.set(e);
-		T newSource = support.copySource();
-		support.fireCollectionChangeEvent(oldSource, newSource, index);
+		support.fireCollectionChangeEvent(support.newCollectionChangeEvent(new ListDifference<E>(ImmutableList.of(element), ImmutableList.of(e)), index));
 	}
 }

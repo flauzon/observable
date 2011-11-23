@@ -3,6 +3,9 @@ package com.netappsid.observable.internal;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,20 +15,20 @@ import com.netappsid.observable.CollectionChangeEvent;
 import com.netappsid.observable.CollectionChangeListener;
 import com.netappsid.observable.CollectionDifference;
 import com.netappsid.observable.ListDifference;
-import com.netappsid.observable.ObservableCollections;
-import com.netappsid.observable.ObservableSet;
+import com.netappsid.observable.InternalObservableCollectionSupport;
+import com.netappsid.observable.ObservableSetDecorator;
 import com.netappsid.observable.test.CollectionChangeEventSpy;
 
 public class ObservableCollectionSupportTest
 {
-	private ObservableSet<Integer> source;
-	private SetObservableCollectionSupport<Integer> support;
+	private InternalObservableCollection<Integer, Set<Integer>> source;
+	private InternalObservableCollectionSupport<Integer> support;
 
 	@Before
 	public void before()
 	{
-		source = ObservableCollections.newObservableHashSet();
-		support = new SetObservableCollectionSupport<Integer>(source);
+		source = new ObservableSetDecorator<Integer>(new HashSet<Integer>());
+		support = source.getSupport();
 	}
 
 	@Test
@@ -85,17 +88,6 @@ public class ObservableCollectionSupportTest
 		assertEquals(added, event.getAdded());
 		assertEquals(removed, event.getRemoved());
 		assertEquals(index, event.getIndex());
-	}
-
-	@Test
-	public void test_firesCollectionChangeEventFromSetsDifference()
-	{
-		final CollectionChangeEventSpy eventSpy = new CollectionChangeEventSpy();
-		support.addCollectionChangeListener(eventSpy);
-
-		support.fireCollectionChangeEvent(ImmutableSet.of(1, 2, 3), ImmutableSet.of(2, 3, 4));
-
-		eventSpy.assertEvent(source, ImmutableSet.of(4), ImmutableSet.of(1));
 	}
 
 	@Test

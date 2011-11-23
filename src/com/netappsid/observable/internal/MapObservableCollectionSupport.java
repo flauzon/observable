@@ -3,7 +3,8 @@
  */
 package com.netappsid.observable.internal;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.Map;
+
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
 import com.netappsid.observable.AbstractObservableCollectionSupport;
@@ -17,13 +18,14 @@ import com.netappsid.observable.ObservableMap;
  * @version
  * 
  */
-public class MapObservableCollectionSupport<K, E> extends AbstractObservableCollectionSupport<E, ImmutableMap<K, E>>
+public class MapObservableCollectionSupport<K, V, T extends ObservableMap<K, V> & InternalObservableCollection<Map.Entry<K, V>, Map<K, V>>> extends
+		AbstractObservableCollectionSupport<Map.Entry<K, V>, Map<K, V>>
 {
 
 	/**
 	 * @param source
 	 */
-	public MapObservableCollectionSupport(ObservableMap<K, E> source)
+	public MapObservableCollectionSupport(T source)
 	{
 		super(source);
 	}
@@ -34,11 +36,11 @@ public class MapObservableCollectionSupport<K, E> extends AbstractObservableColl
 	 * @see com.netappsid.observable.AbstractObservableCollectionSupport#createCollectionChangeEvent(java.lang.Object, java.lang.Object, java.lang.Object)
 	 */
 	@Override
-	protected CollectionChangeEvent<E> createCollectionChangeEvent(ImmutableMap<K, E> oldMap, ImmutableMap<K, E> newMap, Object index)
+	protected CollectionChangeEvent<Map.Entry<K, V>> createCollectionChangeEvent(Object index)
 	{
-		MapDifference difference = Maps.difference(oldMap, newMap);
+		MapDifference difference = Maps.difference(getSnapshot(), takeSnapshot());
 		com.netappsid.observable.internal.MapDifference mapDifference = new com.netappsid.observable.internal.MapDifference(difference);
-		return new CollectionChangeEvent<E>(getSource(), mapDifference, index);
+		return newCollectionChangeEvent(mapDifference, index);
 	}
 
 }

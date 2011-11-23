@@ -4,16 +4,13 @@ import java.awt.EventQueue;
 
 import org.apache.log4j.Logger;
 
-import com.google.common.collect.ImmutableList;
-
-public class SwingObservableCollectionSupport<E, T> implements ObservableCollectionSupport<E, T>
+public class SwingObservableCollectionSupport<E, T extends ObservableCollection<E>> extends DefaultObservableCollectionSupport<E>
 {
 	private static final Logger LOGGER = Logger.getLogger(SwingObservableCollectionSupport.class);
-	private final ObservableCollectionSupport<E, T> delegate;
 
-	public SwingObservableCollectionSupport(ObservableCollectionSupport<E, T> delegate)
+	public SwingObservableCollectionSupport(T source)
 	{
-		this.delegate = delegate;
+		super(source);
 	}
 
 	@Override
@@ -21,7 +18,7 @@ public class SwingObservableCollectionSupport<E, T> implements ObservableCollect
 	{
 		if (EventQueue.isDispatchThread())
 		{
-			delegate.fireCollectionChangeEvent(event);
+			super.fireCollectionChangeEvent(event);
 		}
 		else
 		{
@@ -32,7 +29,7 @@ public class SwingObservableCollectionSupport<E, T> implements ObservableCollect
 						@Override
 						public void run()
 						{
-							delegate.fireCollectionChangeEvent(event);
+							fireCollectionChangeEvent(event);
 						}
 					});
 			}
@@ -41,68 +38,5 @@ public class SwingObservableCollectionSupport<E, T> implements ObservableCollect
 				LOGGER.error(e.getMessage(), e);
 			}
 		}
-	}
-
-	/**
-	 * @param listener
-	 * @see com.netappsid.observable.ObservableCollectionSupport#addCollectionChangeListener(com.netappsid.observable.CollectionChangeListener)
-	 */
-	@Override
-	public void addCollectionChangeListener(CollectionChangeListener listener)
-	{
-		delegate.addCollectionChangeListener(listener);
-	}
-
-	/**
-	 * @param listener
-	 * @see com.netappsid.observable.ObservableCollectionSupport#removeCollectionChangeListener(com.netappsid.observable.CollectionChangeListener)
-	 */
-	@Override
-	public void removeCollectionChangeListener(CollectionChangeListener listener)
-	{
-		delegate.removeCollectionChangeListener(listener);
-	}
-
-	/**
-	 * @return
-	 * @see com.netappsid.observable.ObservableCollectionSupport#getCollectionChangeListeners()
-	 */
-	@Override
-	public ImmutableList<CollectionChangeListener<E>> getCollectionChangeListeners()
-	{
-		return delegate.getCollectionChangeListeners();
-	}
-
-	/**
-	 * @param oldCollection
-	 * @param newCollection
-	 * @see com.netappsid.observable.ObservableCollectionSupport#fireCollectionChangeEvent(java.lang.Object, java.lang.Object)
-	 */
-	@Override
-	public void fireCollectionChangeEvent(T oldCollection, T newCollection)
-	{
-		delegate.fireCollectionChangeEvent(oldCollection, newCollection);
-	}
-
-	/**
-	 * @param oldCollection
-	 * @param newCollection
-	 * @param index
-	 * @see com.netappsid.observable.ObservableCollectionSupport#fireCollectionChangeEvent(java.lang.Object, java.lang.Object, java.lang.Object)
-	 */
-	@Override
-	public void fireCollectionChangeEvent(T oldCollection, T newCollection, Object index)
-	{
-		delegate.fireCollectionChangeEvent(oldCollection, newCollection, index);
-	}
-
-	/**
-	 * @return
-	 * @see com.netappsid.observable.ObservableCollectionSupport#copySource()
-	 */
-	@Override
-	public T copySource()
-	{
-		return delegate.copySource();
 	}
 }

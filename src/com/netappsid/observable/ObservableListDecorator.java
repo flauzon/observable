@@ -5,9 +5,12 @@ import java.util.List;
 import java.util.ListIterator;
 
 import com.google.common.collect.ImmutableList;
+import com.netappsid.observable.internal.InternalObservableCollection;
 import com.netappsid.observable.internal.ListObservableCollectionSupport;
 
-class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E, ImmutableList<E>> implements ObservableList<E>
+class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E, List<E>> implements ObservableList<E>,
+		InternalObservableCollection<E, List<E>>
+
 {
 	private final List<E> internal;
 
@@ -20,17 +23,17 @@ class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E
 	@Override
 	public void add(int index, E element)
 	{
-		final ImmutableList<E> oldList = ImmutableList.copyOf(internal);
+		getSupport().createSnapshot();
 		internal.add(index, element);
-		getSupport().fireCollectionChangeEvent(oldList, ImmutableList.copyOf(internal), index);
+		getSupport().fireCollectionChangeEvent(index);
 	}
 
 	@Override
 	public boolean addAll(int index, Collection<? extends E> c)
 	{
-		final ImmutableList<E> oldList = ImmutableList.copyOf(internal);
+		getSupport().createSnapshot();
 		boolean result = internal.addAll(index, c);
-		getSupport().fireCollectionChangeEvent(oldList, ImmutableList.copyOf(internal), index);
+		getSupport().fireCollectionChangeEvent(index);
 		return result;
 	}
 
@@ -55,40 +58,40 @@ class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E
 	@Override
 	public ListIterator<E> listIterator()
 	{
-		return new ObservableListIterator<E, ImmutableList<E>>(internal.listIterator(), getSupport());
+		return new ObservableListIterator<E>(internal.listIterator(), getSupport());
 	}
 
 	@Override
 	public ListIterator<E> listIterator(int index)
 	{
-		return new ObservableListIterator<E, ImmutableList<E>>(internal.listIterator(index), getSupport());
+		return new ObservableListIterator<E>(internal.listIterator(index), getSupport());
 	}
 
 	@Override
 	public E remove(int index)
 	{
-		final ImmutableList<E> oldList = ImmutableList.copyOf(internal);
+		getSupport().createSnapshot();
 		final E element = internal.remove(index);
-		getSupport().fireCollectionChangeEvent(oldList, ImmutableList.copyOf(internal), index);
+		getSupport().fireCollectionChangeEvent(index);
 		return element;
 	}
 
 	@Override
 	public boolean remove(Object o)
 	{
-		final ImmutableList<E> oldList = ImmutableList.copyOf(internal);
+		getSupport().createSnapshot();
 		final int index = internal.indexOf(o);
 		final boolean result = internal.remove(o);
-		getSupport().fireCollectionChangeEvent(oldList, ImmutableList.copyOf(internal), index);
+		getSupport().fireCollectionChangeEvent(index);
 		return result;
 	}
 
 	@Override
 	public E set(int index, E element)
 	{
-		final ImmutableList<E> oldList = ImmutableList.copyOf(internal);
+		getSupport().createSnapshot();
 		final E oldElement = internal.set(index, element);
-		getSupport().fireCollectionChangeEvent(oldList, ImmutableList.copyOf(internal), index);
+		getSupport().fireCollectionChangeEvent(index);
 		return oldElement;
 	}
 
@@ -104,7 +107,7 @@ class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E
 	 * @see com.netappsid.observable.AbstractObservableCollectionDecorator#copyOf(java.util.Collection)
 	 */
 	@Override
-	protected ImmutableList<E> copyOf(Collection<E> internal)
+	protected List<E> copyOf(List<E> internal)
 	{
 		return ImmutableList.copyOf(internal);
 	}
@@ -115,9 +118,9 @@ class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E
 	 * @see com.netappsid.observable.AbstractObservableCollectionDecorator#newSupport()
 	 */
 	@Override
-	protected ObservableCollectionSupport<E, ImmutableList<E>> newSupport()
+	protected InternalObservableCollectionSupport<E> newSupport()
 	{
-		return new ListObservableCollectionSupport<E>(this);
+		return new ListObservableCollectionSupport<E, ObservableListDecorator<E>>(this);
 	}
 
 }

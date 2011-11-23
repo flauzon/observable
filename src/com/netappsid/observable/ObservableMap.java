@@ -12,7 +12,7 @@ import java.util.Map;
  * @version
  * 
  */
-public interface ObservableMap<K, E> extends ObservableCollection<E>, Map<K, E>
+public interface ObservableMap<K, V> extends ObservableCollection<Map.Entry<K, V>>, Map<K, V>
 {
 
 }

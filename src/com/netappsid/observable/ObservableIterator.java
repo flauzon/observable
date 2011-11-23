@@ -2,13 +2,15 @@ package com.netappsid.observable;
 
 import java.util.Iterator;
 
-public class ObservableIterator<E, T> implements Iterator<E>
+import com.google.common.collect.ImmutableList;
+
+public class ObservableIterator<E> implements Iterator<E>
 {
 	private final Iterator<E> internal;
-	private final ObservableCollectionSupport<E, T> observableSupport;
+	private final ObservableCollectionSupport<E> observableSupport;
 	private E next;
 
-	public ObservableIterator(Iterator<E> sourceIterator, ObservableCollectionSupport<E, T> sourceSupport)
+	public ObservableIterator(Iterator<E> sourceIterator, ObservableCollectionSupport<E> sourceSupport)
 	{
 		this.internal = sourceIterator;
 		this.observableSupport = sourceSupport;
@@ -30,9 +32,8 @@ public class ObservableIterator<E, T> implements Iterator<E>
 	@Override
 	public void remove()
 	{
-		T oldCollection = observableSupport.copySource();
 		internal.remove();
-		T newCollection = observableSupport.copySource();
-		observableSupport.fireCollectionChangeEvent(oldCollection, newCollection);
+		observableSupport.fireCollectionChangeEvent(observableSupport.newCollectionChangeEvent(new ListDifference<E>(ImmutableList.of(next), ImmutableList
+				.<E> of())));
 	}
 }
