@@ -4,11 +4,12 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import com.google.common.collect.ImmutableList;
-import com.netappsid.observable.internal.InternalObservableCollection;
 
 abstract class AbstractObservableCollectionDecorator<E, T extends Collection<E>> implements ObservableCollectionCollection<E>,
 		InternalObservableCollection<E, T>
 {
+	private static final String EMPTY_CONTENT = "{}";
+
 	private final T internal;
 	private transient InternalObservableCollectionSupport<E> support;
 
@@ -157,12 +158,6 @@ abstract class AbstractObservableCollectionDecorator<E, T extends Collection<E>>
 	}
 
 	@Override
-	public String toString()
-	{
-		return internal.toString();
-	}
-
-	@Override
 	public InternalObservableCollectionSupport<E> getSupport()
 	{
 		if (support == null)
@@ -229,4 +224,9 @@ abstract class AbstractObservableCollectionDecorator<E, T extends Collection<E>>
 		}
 	}
 
+	@Override
+	public String toString()
+	{
+		return (internal == null) ? EMPTY_CONTENT : internal.toString();
+	}
 }
