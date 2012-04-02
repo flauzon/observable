@@ -5,7 +5,6 @@ package com.netappsid.observable;
 
 import java.util.Collection;
 
-import com.netappsid.observable.internal.InternalObservableCollection;
 
 /**
  * @author xjodoin

@@ -10,6 +10,7 @@ import com.google.common.collect.ImmutableList;
 import com.netappsid.observable.BatchAction;
 import com.netappsid.observable.CollectionChangeListener;
 import com.netappsid.observable.CollectionDifference;
+import com.netappsid.observable.InternalObservableCollection;
 import com.netappsid.observable.InternalObservableCollectionSupport;
 import com.netappsid.observable.LazyInitializer;
 import com.netappsid.observable.ObservableCollections;

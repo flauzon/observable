@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.netappsid.observable.internal;
+package com.netappsid.observable;
 
 import com.netappsid.observable.ObservableCollection;
 import com.netappsid.observable.InternalObservableCollectionSupport;

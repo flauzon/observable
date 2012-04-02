@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.netappsid.observable.AbstractObservableCollectionSupport;
 import com.netappsid.observable.CollectionChangeEvent;
+import com.netappsid.observable.InternalObservableCollection;
 import com.netappsid.observable.ObservableSet;
 
 /**

@@ -1,15 +1,13 @@
 /**
  * 
  */
-package com.netappsid.observable.internal;
+package com.netappsid.observable;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
-import com.netappsid.observable.AbstractObservableCollectionSupport;
-import com.netappsid.observable.CollectionChangeEvent;
-import com.netappsid.observable.ObservableMap;
 
 /**
  * @author xjodoin
@@ -21,6 +19,7 @@ import com.netappsid.observable.ObservableMap;
 public class MapObservableCollectionSupport<K, V, T extends ObservableMap<K, V> & InternalObservableCollection<Map.Entry<K, V>, Map<K, V>>> extends
 		AbstractObservableCollectionSupport<Map.Entry<K, V>, Map<K, V>>
 {
+	private final T source2;
 
 	/**
 	 * @param source
@@ -28,6 +27,7 @@ public class MapObservableCollectionSupport<K, V, T extends ObservableMap<K, V> 
 	public MapObservableCollectionSupport(T source)
 	{
 		super(source);
+		source2 = source;
 	}
 
 	/*
@@ -43,4 +43,9 @@ public class MapObservableCollectionSupport<K, V, T extends ObservableMap<K, V> 
 		return newCollectionChangeEvent(mapDifference, index);
 	}
 
+	@Override
+	public Map<K, V> takeSnapshot()
+	{
+		return new HashMap<K, V>(source2);
+	}
 }

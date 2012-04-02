@@ -10,8 +10,6 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.netappsid.observable.internal.InternalObservableCollection;
-import com.netappsid.observable.internal.MapObservableCollectionSupport;
 
 /**
  * @author xjodoin
@@ -22,6 +20,7 @@ import com.netappsid.observable.internal.MapObservableCollectionSupport;
  */
 public class ObservableMapDecorator<K, V> implements ObservableMap<K, V>, InternalObservableCollection<Map.Entry<K, V>, Map<K, V>>
 {
+	private static final String EMPTY_CONTENT = "{}";
 	private Map<K, V> internal;
 	private transient MapObservableCollectionSupport<K, V, ObservableMapDecorator<K, V>> support;
 
@@ -325,5 +324,11 @@ public class ObservableMapDecorator<K, V> implements ObservableMap<K, V>, Intern
 	public Iterator<Map.Entry<K, V>> iterator()
 	{
 		return entrySet().iterator();
+	}
+
+	@Override
+	public String toString()
+	{
+		return (internal == null) ? EMPTY_CONTENT : internal.toString();
 	}
 }
