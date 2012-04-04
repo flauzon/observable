@@ -18,22 +18,11 @@ import com.google.common.collect.Maps;
 public class MapObservableCollectionSupport<K, V, T extends ObservableMap<K, V> & InternalObservableCollection<Map.Entry<K, V>, Map<K, V>>> extends
 		AbstractObservableCollectionSupport<Map.Entry<K, V>, Map<K, V>>
 {
-	private final T source2;
-
-	/**
-	 * @param source
-	 */
 	public MapObservableCollectionSupport(T source)
 	{
 		super(source);
-		source2 = source;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.netappsid.observable.AbstractObservableCollectionSupport#createCollectionChangeEvent(java.lang.Object, java.lang.Object, java.lang.Object)
-	 */
 	@Override
 	protected CollectionChangeEvent<Map.Entry<K, V>> createCollectionChangeEvent(Object index)
 	{
