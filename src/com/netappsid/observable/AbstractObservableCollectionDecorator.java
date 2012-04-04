@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import com.google.common.collect.ImmutableList;
-import com.netappsid.observable.internal.InternalObservableCollection;
 
 abstract class AbstractObservableCollectionDecorator<E, T extends Collection<E>> implements ObservableCollectionCollection<E>,
 		InternalObservableCollection<E, T>
@@ -157,12 +156,6 @@ abstract class AbstractObservableCollectionDecorator<E, T extends Collection<E>>
 	}
 
 	@Override
-	public String toString()
-	{
-		return internal.toString();
-	}
-
-	@Override
 	public InternalObservableCollectionSupport<E> getSupport()
 	{
 		if (support == null)
@@ -180,22 +173,12 @@ abstract class AbstractObservableCollectionDecorator<E, T extends Collection<E>>
 
 	protected abstract T copyOf(T internal);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.netappsid.observable.ObservableCollection#copy()
-	 */
 	@Override
 	public T copyInternal()
 	{
 		return copyOf(internal);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.netappsid.observable.ObservableCollection#apply(com.netappsid.observable.CollectionDifference)
-	 */
 	@Override
 	public void apply(CollectionDifference<E> difference)
 	{
@@ -210,11 +193,6 @@ abstract class AbstractObservableCollectionDecorator<E, T extends Collection<E>>
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.netappsid.observable.ObservableCollection#unapply(com.netappsid.observable.CollectionDifference)
-	 */
 	@Override
 	public void unapply(CollectionDifference<E> difference)
 	{
@@ -229,4 +207,9 @@ abstract class AbstractObservableCollectionDecorator<E, T extends Collection<E>>
 		}
 	}
 
+	@Override
+	public String toString()
+	{
+		return internal.toString();
+	}
 }

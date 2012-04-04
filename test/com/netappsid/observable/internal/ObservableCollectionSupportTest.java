@@ -14,8 +14,9 @@ import com.google.common.collect.ImmutableSet;
 import com.netappsid.observable.CollectionChangeEvent;
 import com.netappsid.observable.CollectionChangeListener;
 import com.netappsid.observable.CollectionDifference;
-import com.netappsid.observable.ListDifference;
+import com.netappsid.observable.InternalObservableCollection;
 import com.netappsid.observable.InternalObservableCollectionSupport;
+import com.netappsid.observable.ListDifference;
 import com.netappsid.observable.ObservableSetDecorator;
 import com.netappsid.observable.test.CollectionChangeEventSpy;
 

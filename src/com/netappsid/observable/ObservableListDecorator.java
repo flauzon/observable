@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.ListIterator;
 
 import com.google.common.collect.ImmutableList;
-import com.netappsid.observable.internal.InternalObservableCollection;
 import com.netappsid.observable.internal.ListObservableCollectionSupport;
 
 class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E, List<E>> implements ObservableList<E>,
@@ -122,5 +121,4 @@ class ObservableListDecorator<E> extends AbstractObservableCollectionDecorator<E
 	{
 		return new ListObservableCollectionSupport<E, ObservableListDecorator<E>>(this);
 	}
-
 }

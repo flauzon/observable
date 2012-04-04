@@ -10,8 +10,6 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.netappsid.observable.internal.InternalObservableCollection;
-import com.netappsid.observable.internal.MapObservableCollectionSupport;
 
 /**
  * @author xjodoin
@@ -210,11 +208,6 @@ public class ObservableMapDecorator<K, V> implements ObservableMap<K, V>, Intern
 		return internal.hashCode();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.netappsid.observable.ObservableCollection#executeBatchAction(com.netappsid.observable.BatchAction)
-	 */
 	@Override
 	public void executeBatchAction(BatchAction action)
 	{
@@ -234,55 +227,30 @@ public class ObservableMapDecorator<K, V> implements ObservableMap<K, V>, Intern
 		return support;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.netappsid.observable.ObservableCollection#addCollectionChangeListener(com.netappsid.observable.CollectionChangeListener)
-	 */
 	@Override
 	public void addCollectionChangeListener(CollectionChangeListener<Map.Entry<K, V>> listener)
 	{
 		getSupport().addCollectionChangeListener(listener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.netappsid.observable.ObservableCollection#removeCollectionChangeListener(com.netappsid.observable.CollectionChangeListener)
-	 */
 	@Override
 	public void removeCollectionChangeListener(CollectionChangeListener<Map.Entry<K, V>> listener)
 	{
 		getSupport().removeCollectionChangeListener(listener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.netappsid.observable.ObservableCollection#getCollectionChangeListeners()
-	 */
 	@Override
 	public ImmutableList<CollectionChangeListener<java.util.Map.Entry<K, V>>> getCollectionChangeListeners()
 	{
 		return getSupport().getCollectionChangeListeners();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.netappsid.observable.ObservableCollection#copy()
-	 */
 	@Override
 	public Map<K, V> copyInternal()
 	{
 		return ImmutableMap.copyOf(internal);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.netappsid.observable.ObservableCollection#apply(com.netappsid.observable.CollectionDifference)
-	 */
 	@Override
 	public void apply(CollectionDifference<java.util.Map.Entry<K, V>> difference)
 	{
@@ -297,11 +265,6 @@ public class ObservableMapDecorator<K, V> implements ObservableMap<K, V>, Intern
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.netappsid.observable.ObservableCollection#unapply(com.netappsid.observable.CollectionDifference)
-	 */
 	@Override
 	public void unapply(CollectionDifference<java.util.Map.Entry<K, V>> difference)
 	{
@@ -316,14 +279,15 @@ public class ObservableMapDecorator<K, V> implements ObservableMap<K, V>, Intern
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Iterable#iterator()
-	 */
 	@Override
 	public Iterator<Map.Entry<K, V>> iterator()
 	{
 		return entrySet().iterator();
+	}
+
+	@Override
+	public String toString()
+	{
+		return internal.toString();
 	}
 }

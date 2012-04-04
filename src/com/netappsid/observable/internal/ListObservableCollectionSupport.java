@@ -8,6 +8,7 @@ import java.util.List;
 import com.google.common.collect.ImmutableList;
 import com.netappsid.observable.AbstractObservableCollectionSupport;
 import com.netappsid.observable.CollectionChangeEvent;
+import com.netappsid.observable.InternalObservableCollection;
 import com.netappsid.observable.ListDifference;
 import com.netappsid.observable.ObservableList;
 

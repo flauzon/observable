@@ -1,7 +1,5 @@
 package com.netappsid.observable;
 
-import com.netappsid.observable.internal.InternalObservableCollection;
-
 public class StandardObservableCollectionSupportFactory implements ObservableCollectionSupportFactory
 {
 	@Override
