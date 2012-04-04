@@ -36,7 +36,7 @@ public abstract class AbstractObservableCollectionSupport<E, T> extends DefaultO
 
 	public T takeSnapshot()
 	{
-		return getSource().copyInternal();
+		return source.copyInternal();
 	}
 
 	/**
@@ -45,10 +45,5 @@ public abstract class AbstractObservableCollectionSupport<E, T> extends DefaultO
 	public T getSnapshot()
 	{
 		return snapshot;
-	}
-
-	protected InternalObservableCollection<E, T> getSource()
-	{
-		return source;
 	}
 }
