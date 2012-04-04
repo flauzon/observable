@@ -8,8 +8,6 @@ import com.google.common.collect.ImmutableList;
 abstract class AbstractObservableCollectionDecorator<E, T extends Collection<E>> implements ObservableCollectionCollection<E>,
 		InternalObservableCollection<E, T>
 {
-	private static final String EMPTY_CONTENT = "{}";
-
 	private final T internal;
 	private transient InternalObservableCollectionSupport<E> support;
 
@@ -175,22 +173,12 @@ abstract class AbstractObservableCollectionDecorator<E, T extends Collection<E>>
 
 	protected abstract T copyOf(T internal);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.netappsid.observable.ObservableCollection#copy()
-	 */
 	@Override
 	public T copyInternal()
 	{
 		return copyOf(internal);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.netappsid.observable.ObservableCollection#apply(com.netappsid.observable.CollectionDifference)
-	 */
 	@Override
 	public void apply(CollectionDifference<E> difference)
 	{
@@ -205,11 +193,6 @@ abstract class AbstractObservableCollectionDecorator<E, T extends Collection<E>>
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.netappsid.observable.ObservableCollection#unapply(com.netappsid.observable.CollectionDifference)
-	 */
 	@Override
 	public void unapply(CollectionDifference<E> difference)
 	{
@@ -227,6 +210,6 @@ abstract class AbstractObservableCollectionDecorator<E, T extends Collection<E>>
 	@Override
 	public String toString()
 	{
-		return (internal == null) ? EMPTY_CONTENT : internal.toString();
+		return internal.toString();
 	}
 }
