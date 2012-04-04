@@ -3,7 +3,6 @@
  */
 package com.netappsid.observable;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import com.google.common.collect.MapDifference;
@@ -41,11 +40,5 @@ public class MapObservableCollectionSupport<K, V, T extends ObservableMap<K, V> 
 		MapDifference difference = Maps.difference(getSnapshot(), takeSnapshot());
 		com.netappsid.observable.internal.MapDifference mapDifference = new com.netappsid.observable.internal.MapDifference(difference);
 		return newCollectionChangeEvent(mapDifference, index);
-	}
-
-	@Override
-	public Map<K, V> takeSnapshot()
-	{
-		return new HashMap<K, V>(source2);
 	}
 }
