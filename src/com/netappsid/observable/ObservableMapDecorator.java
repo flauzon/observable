@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 
 /**
  * @author xjodoin
@@ -248,7 +248,7 @@ public class ObservableMapDecorator<K, V> implements ObservableMap<K, V>, Intern
 	@Override
 	public Map<K, V> copyInternal()
 	{
-		return ImmutableMap.copyOf(internal);
+		return Maps.newHashMap(internal);
 	}
 
 	@Override
